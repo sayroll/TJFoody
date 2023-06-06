@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using TJFoody.Server.Data;
+using TJFoody.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
+builder.Services.AddDbContext<infoContext>(options=> options.UseMySql(builder.Configuration.GetConnectionString("Default"), ServerVersion.Parse("5.7.18-mysql")));
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
