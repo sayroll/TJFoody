@@ -205,14 +205,14 @@
       "netstandard.dll": "sha256-CgGkoZQx73t3qchcsu85kgBcgrjNEOiudArOwKNb18k=",
       "System.Private.CoreLib.dll": "sha256-6nUSjiT7okMlkN897OnDypwppYuK7JxTahOClXkAuwE=",
       "TJFoody.Shared.dll": "sha256-j33QM9FL6YUV3lphQ67MwOqPUqljkOOcZxZD2iuKve4=",
-      "TJFoody.Client.dll": "sha256-Jnc03ejPkZvCCfAFl4UutYLaNJgrjlTk0apawCEQaIg="
+      "TJFoody.Client.dll": "sha256-9aus5iaBlFfYDM3Vw9XaUgjHRoTOTxbayxNOXX6l7fg="
     },
     "extensions": null,
     "lazyAssembly": null,
     "libraryInitializers": null,
     "pdb": {
       "TJFoody.Shared.pdb": "sha256-IRt911ZpC3SrMHeOLUlWbJhSbYyxJ4bFMj8PQaNIWTM=",
-      "TJFoody.Client.pdb": "sha256-Ete+gncZcKi3aJDm1rdKPcOjy8RN0k6bhQuo\/FEQ3L8="
+      "TJFoody.Client.pdb": "sha256-LzA7Moom6Bz389MDf09Am+hlZpqNB2gxkCNtpzHZHnE="
     },
     "runtime": {
       "dotnet.6.0.16.fy2kjeycku.js": "sha256-GT2gK+GjOisRXJY+9yh6H8s6K\/KDIsaFMFIgWvAnttY=",
