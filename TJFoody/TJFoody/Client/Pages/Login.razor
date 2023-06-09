@@ -1,0 +1,86 @@
+@page "/login"
+@inject NavigationManager Navigation
+@inject MessageService MessageService
+@using System.ComponentModel;
+@using System.Diagnostics.CodeAnalysis;
+@using System.ComponentModel.DataAnnotations;
+
+<style>
+    .border-radius {
+        font-size: .8rem;
+        border-radius: 10rem;
+        padding: .75rem 1rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-12 col-xl-7">
+            <Card class="shadow-lg o-hidden border-0 my-5">
+                <BodyTemplate>
+                    <div class="row">
+                            <div class="p-5">
+                                <div class="text-center">
+                                <h4 class="mb-4" style="color:cornflowerblue">TJInfo 信息交流平台</h4>
+                                    <h4 class="text-dark mb-4" >LOGIN</h4>
+                                </div>
+                                <ValidateForm Model="@Model" @ref="ValidatorForm">
+                                    <div class="mb-4">
+                                        <BootstrapInput @bind-Value="Model.UserName" class="border-radius" ShowLabel="false" PlaceHolder="请输入账号" />
+                                    </div>
+                                    <div class="mb-4">
+                                        <BootstrapPassword @bind-Value="Model.Password" class="border-radius" ShowLabel="false" PlaceHolder="请输入密码" />
+                                    </div>
+                                    <Button Text="登陆" OnClickWithoutRender="OnValidator" Color="Color.Primary" class="border-radius w-100"></Button>
+                                    <hr />
+                                    <a>
+                                        <i class="fab" />
+                                        <Button Text="用户注册" Color="Color.Info" class="border-radius w-100" OnClick="@UserRegistration"></Button>
+                                    </a>
+                                </ValidateForm>
+                            </div>
+                        </div>
+                </BodyTemplate>
+            </Card>
+        </div>
+    </div>
+</div>
+
+@code {
+    [NotNull]
+    private LoginModel? Model { get; set; } = new();
+
+    [NotNull]
+    private ValidateForm? ValidatorForm { get; set; }
+
+    private async Task OnValidator()
+    {
+        var result = ValidatorForm.Validate();
+        if (result)
+        {
+            await MessageService.Show(new MessageOption() { Content = "登陆成功" });
+            Navigation.NavigateTo("");
+        }
+    }
+
+    private Task UserRegistration()
+    {
+        Navigation.NavigateTo("register");
+        return Task.CompletedTask;
+    }
+
+    class LoginModel
+    {
+        [DataType(DataType.Text)]
+        [Display(Name = "账号")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        public string? UserName { get; set; }
+
+        [DataType(DataType.Password)]
+        [Display(Name = "密码")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        public string? Password { get; set; }
+
+        public bool RememberMe { get; set; }
+    }
+}

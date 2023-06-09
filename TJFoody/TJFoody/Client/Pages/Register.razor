@@ -1,0 +1,97 @@
+@page "/register"
+@inject NavigationManager Navigation
+@inject MessageService MessageService
+@using System.ComponentModel;
+@using System.Diagnostics.CodeAnalysis;
+@using System.ComponentModel.DataAnnotations;
+
+<style>
+    .border-radius {
+        font-size: .8rem;
+        border-radius: 10rem;
+        padding: .75rem 1rem;
+    }
+</style>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-9 col-lg-12 col-xl-7">
+            <Card class="shadow-lg o-hidden border-0 my-5">
+                <BodyTemplate>
+                    <div class="row">
+                        <div class="p-5">
+                            <div class="text-center">
+                                <h4 class="mb-4" style="color:cornflowerblue">TJInfo 信息交流平台</h4>
+                                <h4 class="text-dark mb-4">REGISTER</h4>
+                            </div>
+                            <ValidateForm Model="@Model" @ref="ValidatorForm">
+                                <div class="mb-4">
+                                    <BootstrapInput @bind-Value="Model.UserName" class="border-radius" ShowLabel="false" PlaceHolder="请输入账号" />
+                                </div>
+                                <div class="row mb-4">
+                                    <div class="col-sm-6 mb-3 mb-sm-0">
+                                        <BootstrapPassword @bind-Value="Model.Password" class="border-radius" ShowLabel="false" PlaceHolder="请输入密码" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <BootstrapPassword @bind-Value="Model.ConfirmPassword" class="border-radius" ShowLabel="false" PlaceHolder="请重复密码" />
+                                    </div>
+                                </div>
+                                <Button Text="注册帐号" OnClickWithoutRender="OnValidator" Color="Color.Primary" class="border-radius w-100"></Button>
+                                <hr />
+                                <a>
+                                    <i class="fab" />
+                                    <Button Text="用户登陆" Color="Color.Info" class="border-radius w-100" OnClick="@UserLogin"></Button>
+                                </a>
+                            </ValidateForm>
+                        </div>
+                    </div>
+
+                </BodyTemplate>
+            </Card>
+        </div>
+    </div>
+</div>
+
+@code {
+    [NotNull]
+    private RegisterModel? Model { get; set; } = new();
+
+    [NotNull]
+    private ValidateForm? ValidatorForm { get; set; }
+
+    private Task UserLogin()
+    {
+        Navigation.NavigateTo("login");
+        return Task.CompletedTask;
+    }
+
+    private async Task OnValidator()
+    {
+        var result = ValidatorForm.Validate();
+        if (result)
+        {
+            await MessageService.Show(new MessageOption() { Content = "账号注册成功，即将跳转到登陆页面！" });
+            Navigation.NavigateTo("login");
+        }
+    }
+
+    class RegisterModel
+    {
+        [DataType(DataType.Text)]
+        [Display(Name = "账号")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        public string? UserName { get; set; }
+
+        [NotNull]
+        [Required(ErrorMessage = "请输入密码")]
+        [DataType(DataType.Password)]
+        [Display(Name = "密码")]
+        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "请确认密码")]
+        [Compare(nameof(Password))]
+        [DataType(DataType.Password)]
+        [Display(Name = "确认密码")]
+        public string? ConfirmPassword { get; set; }
+    }
+}

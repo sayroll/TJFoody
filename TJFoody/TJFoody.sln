@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33627.172
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TJFoody.Server", "TJFoody\Server\TJFoody.Server.csproj", "{58A12217-C7C5-49FA-ABE9-56B2CD4EEC3D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TJFoody.Server", "TJFoody\Server\TJFoody.Server.csproj", "{58A12217-C7C5-49FA-ABE9-56B2CD4EEC3D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TJFoody.Client", "TJFoody\Client\TJFoody.Client.csproj", "{5256D33F-6BA5-4F21-BE00-BD52BE0D5653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TJFoody.Client", "TJFoody\Client\TJFoody.Client.csproj", "{5256D33F-6BA5-4F21-BE00-BD52BE0D5653}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TJFoody.Shared", "TJFoody\Shared\TJFoody.Shared.csproj", "{7D76222F-4110-4CF3-AF86-74835AC96E39}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TJFoody.Shared", "TJFoody\Shared\TJFoody.Shared.csproj", "{7D76222F-4110-4CF3-AF86-74835AC96E39}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

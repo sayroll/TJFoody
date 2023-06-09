@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.EntityFrameworkCore;
-using TJFoody.Server.Data;
+using Microsoft.EntityFrameworkCore; 
 using TJFoody.Server.Models;
 
 var builder = WebApplication.CreateBuilder(args);

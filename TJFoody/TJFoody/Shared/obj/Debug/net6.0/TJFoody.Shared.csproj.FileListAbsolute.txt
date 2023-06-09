@@ -10,3 +10,15 @@ E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.dl
 E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\refint\TJFoody.Shared.dll
 E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.pdb
 E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\ref\TJFoody.Shared.dll
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\bin\Debug\net6.0\TJFoody.Shared.deps.json
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\bin\Debug\net6.0\TJFoody.Shared.dll
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\bin\Debug\net6.0\TJFoody.Shared.pdb
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.csproj.AssemblyReference.cache
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.AssemblyInfoInputs.cache
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.AssemblyInfo.cs
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.csproj.CoreCompileInputs.cache
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.dll
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\refint\TJFoody.Shared.dll
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\TJFoody.Shared.pdb
+D:\Github_Space\TJFoody\TJFoody\TJFoody\Shared\obj\Debug\net6.0\ref\TJFoody.Shared.dll

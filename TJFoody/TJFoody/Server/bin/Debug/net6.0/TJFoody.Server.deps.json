@@ -8,6 +8,8 @@
     ".NETCoreApp,Version=v6.0": {
       "TJFoody.Server/1.0.0": {
         "dependencies": {
+          "BootstrapBlazor": "7.7.0",
+          "BootstrapBlazor.FontAwesome": "7.4.2",
           "Microsoft.AspNetCore.Components.WebAssembly.Server": "6.0.15",
           "Microsoft.EntityFrameworkCore": "6.0.1",
           "Microsoft.EntityFrameworkCore.Design": "6.0.1",
@@ -20,6 +22,34 @@
         },
         "runtime": {
           "TJFoody.Server.dll": {}
+        }
+      },
+      "BootstrapBlazor/7.7.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Authorization": "6.0.0",
+          "Microsoft.AspNetCore.Components.Web": "6.0.15",
+          "Microsoft.Extensions.Caching.Memory": "6.0.0",
+          "Microsoft.Extensions.Configuration.Json": "6.0.0",
+          "Microsoft.Extensions.Http": "6.0.0",
+          "Microsoft.Extensions.Localization": "6.0.0",
+          "Microsoft.Extensions.Options.ConfigurationExtensions": "6.0.0"
+        },
+        "runtime": {
+          "lib/net6.0/BootstrapBlazor.dll": {
+            "assemblyVersion": "7.7.0.0",
+            "fileVersion": "7.7.0.0"
+          }
+        }
+      },
+      "BootstrapBlazor.FontAwesome/7.4.2": {
+        "dependencies": {
+          "BootstrapBlazor": "7.7.0"
+        },
+        "runtime": {
+          "lib/net6.0/BootstrapBlazor.FontAwesome.dll": {
+            "assemblyVersion": "7.4.2.0",
+            "fileVersion": "7.4.2.0"
+          }
         }
       },
       "BouncyCastle.NetCore/1.8.5": {
@@ -106,6 +136,12 @@
         }
       },
       "Microsoft.AspNetCore.Components.Analyzers/6.0.15": {},
+      "Microsoft.AspNetCore.Components.Authorization/6.0.0": {
+        "dependencies": {
+          "Microsoft.AspNetCore.Authorization": "6.0.15",
+          "Microsoft.AspNetCore.Components": "6.0.15"
+        }
+      },
       "Microsoft.AspNetCore.Components.Forms/6.0.15": {
         "dependencies": {
           "Microsoft.AspNetCore.Components": "6.0.15"
@@ -292,6 +328,23 @@
         }
       },
       "Microsoft.Extensions.FileSystemGlobbing/6.0.0": {},
+      "Microsoft.Extensions.Http/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
+      "Microsoft.Extensions.Localization/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Localization.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Logging.Abstractions": "6.0.3",
+          "Microsoft.Extensions.Options": "6.0.0"
+        }
+      },
+      "Microsoft.Extensions.Localization.Abstractions/6.0.0": {},
       "Microsoft.Extensions.Logging/6.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection": "6.0.1",
@@ -312,6 +365,15 @@
       "Microsoft.Extensions.Options/6.0.0": {
         "dependencies": {
           "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Primitives": "6.0.0"
+        }
+      },
+      "Microsoft.Extensions.Options.ConfigurationExtensions/6.0.0": {
+        "dependencies": {
+          "Microsoft.Extensions.Configuration.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "6.0.0",
+          "Microsoft.Extensions.DependencyInjection.Abstractions": "6.0.0",
+          "Microsoft.Extensions.Options": "6.0.0",
           "Microsoft.Extensions.Primitives": "6.0.0"
         }
       },
@@ -549,6 +611,7 @@
       },
       "TJFoody.Client/1.0.0": {
         "dependencies": {
+          "BootstrapBlazor": "7.7.0",
           "Microsoft.AspNetCore.Components.WebAssembly": "6.0.15",
           "TJFoody.Shared": "1.0.0"
         },
@@ -568,6 +631,20 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BootstrapBlazor/7.7.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5PvYtLyV4MtKCciiOoIBZGCnxiZ01eU3VWgl2q+ElffsAdp8ErR9qt8jmLBTfzodS8pp5yBx/GkB23FfZex6kQ==",
+      "path": "bootstrapblazor/7.7.0",
+      "hashPath": "bootstrapblazor.7.7.0.nupkg.sha512"
+    },
+    "BootstrapBlazor.FontAwesome/7.4.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-zNaC61/Z58+/gy+p90382HTZlFdQRYZMekDyrRH70686sS2mG2i+RU1kZgYaBSFjia6q0EFDWmXENI5ZhvANFw==",
+      "path": "bootstrapblazor.fontawesome/7.4.2",
+      "hashPath": "bootstrapblazor.fontawesome.7.4.2.nupkg.sha512"
     },
     "BouncyCastle.NetCore/1.8.5": {
       "type": "package",
@@ -631,6 +708,13 @@
       "sha512": "sha512-SY3lpvgNeGiCHbBi+B8yIB/LhfvXUtXdHLEasFf+ervZ0qEaGyN+qF92Xk70rVpmXZrK3bxAtr1Fez2ufepU6w==",
       "path": "microsoft.aspnetcore.components.analyzers/6.0.15",
       "hashPath": "microsoft.aspnetcore.components.analyzers.6.0.15.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Components.Authorization/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-AdrLj0S71GgcGUm7MMzwjzpkmAO044nFhzmvT+x/acB0HNyolWo6jMZBXxEm93iQDSeFlfRQGsw+bD+6mdMhYg==",
+      "path": "microsoft.aspnetcore.components.authorization/6.0.0",
+      "hashPath": "microsoft.aspnetcore.components.authorization.6.0.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Components.Forms/6.0.15": {
       "type": "package",
@@ -793,6 +877,27 @@
       "path": "microsoft.extensions.filesystemglobbing/6.0.0",
       "hashPath": "microsoft.extensions.filesystemglobbing.6.0.0.nupkg.sha512"
     },
+    "Microsoft.Extensions.Http/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-15+pa2G0bAMHbHewaQIdr/y6ag2H3yh4rd9hTXavtWDzQBkvpe2RMqFg8BxDpcQWssmjmBApGPcw93QRz6YcMg==",
+      "path": "microsoft.extensions.http/6.0.0",
+      "hashPath": "microsoft.extensions.http.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Localization/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-WS/BXvYSh0yGAXvKYvqGLzmhe4raIxmsLwd3pqg0T/zmTMy44PFiTbJm41F2GcPsv3zAV34jcs5aPjjE8td8bA==",
+      "path": "microsoft.extensions.localization/6.0.0",
+      "hashPath": "microsoft.extensions.localization.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Localization.Abstractions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-UQJmE78r414kbguPmvbT6MIz0r8LPsBhjLNOlpXOP1VVjaSIuUMATfAve8Q+oivwNG3Mnv+5OLZHfaBkB4SuUg==",
+      "path": "microsoft.extensions.localization.abstractions/6.0.0",
+      "hashPath": "microsoft.extensions.localization.abstractions.6.0.0.nupkg.sha512"
+    },
     "Microsoft.Extensions.Logging/6.0.0": {
       "type": "package",
       "serviceable": true,
@@ -813,6 +918,13 @@
       "sha512": "sha512-dzXN0+V1AyjOe2xcJ86Qbo233KHuLEY0njf/P2Kw8SfJU+d45HNS2ctJdnEnrWbM9Ye2eFgaC5Mj9otRMU6IsQ==",
       "path": "microsoft.extensions.options/6.0.0",
       "hashPath": "microsoft.extensions.options.6.0.0.nupkg.sha512"
+    },
+    "Microsoft.Extensions.Options.ConfigurationExtensions/6.0.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bXWINbTn0vC0FYc9GaQTISbxhQLAMrvtbuvD9N6JelEaIS/Pr62wUCinrq5bf1WRBGczt1v4wDhxFtVFNcMdUQ==",
+      "path": "microsoft.extensions.options.configurationextensions/6.0.0",
+      "hashPath": "microsoft.extensions.options.configurationextensions.6.0.0.nupkg.sha512"
     },
     "Microsoft.Extensions.Primitives/6.0.0": {
       "type": "package",
