@@ -160,3 +160,5 @@ D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\obj\Debug\net6.0\TJFoody.Server.g
 D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\obj\Debug\net6.0\ref\TJFoody.Server.dll
 D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.dll
 D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.FontAwesome.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.FontAwesome.dll

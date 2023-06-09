@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace TJFoody.Server.Models
+namespace TJFoody.Shared
 {
     public partial class SellerReview
     {
