@@ -12,7 +12,7 @@
 
         public async Task GetSellers()
         {
-            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Seller>>>("Seller");
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Seller>>>("Seller/get");
             if (result != null && result.Data != null)
                 sellers = result.Data;
         }
