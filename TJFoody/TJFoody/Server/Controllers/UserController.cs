@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using TJFoody.Server.Models;
 using TJFoody.Shared;
+using TJFoody.Server.Service.UserService;
 
 namespace TJFoody.Server.Controllers
 {
@@ -10,21 +11,18 @@ namespace TJFoody.Server.Controllers
     [Route("[controller]")]
     public class UserController : ControllerBase
     {
-        private readonly infoContext _infoContext;
-        public UserController(infoContext infoContext) 
+        private readonly IUserService _userService;
+        public UserController(IUserService userService) 
         {
-            _infoContext = infoContext;
+            _userService = userService;
         }
 
-        [HttpGet]
-        [Route("get")]
-        public async Task<ActionResult<ServiceResponse<List<User>>>> GetUser()
+        [HttpPost]
+        [Route("register")]
+        public async Task<ActionResult<ServiceResponse<User>>> Register(string phone,string password,string name)
         {
-            var users = await _infoContext.Users.ToListAsync();
-            var response = new ServiceResponse<List<User>>()
-            {
-                Data = users
-            };
+
+            var response = await _userService.Register(phone, password, name);
             return Ok(response);
         }
     }

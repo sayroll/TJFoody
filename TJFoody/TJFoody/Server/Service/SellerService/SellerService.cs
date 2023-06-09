@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TJFoody.Server.Models;
+using TJFoody.Shared;
 
 namespace TJFoody.Server.Service.SellerService
 {
@@ -26,9 +27,27 @@ namespace TJFoody.Server.Service.SellerService
             catch (Exception ex)
             {
                 response.Success = false;
-                response.Message = "添加卖家时发生错误：" + ex.Message;
+                response.Message = "添加商家时发生错误：" + ex.Message;
             }
 
+            return response;
+        }
+
+        public async Task<ServiceResponse<Seller>> GetSellerByID(int id)
+        {
+            var response = new ServiceResponse<Seller>();
+
+            try
+            {
+                response.Data = await _context.Sellers.FindAsync(id);
+
+                response.Message = "成功找到了对应商家";
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = "在查找商家时发生了错误：" + ex.Message;
+            }
             return response;
         }
 
