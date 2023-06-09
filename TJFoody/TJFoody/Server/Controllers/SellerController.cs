@@ -14,7 +14,7 @@ namespace TJFoody.Server.Controllers
 
         [HttpGet]
         [Route("get")]
-        public async Task<ServiceResponse<List<Seller>>> getSellers()
+        public async Task<ActionResult<ServiceResponse<List<Seller>>>> getSellers()
         {
             var result = await _sellerService.GetSellersAsync();
             return Ok(result);
