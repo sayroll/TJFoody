@@ -36,13 +36,21 @@ else
             }
         </tbody>
     </table>
+
+    <h3>@sellers[0].Name</h3>
 }
 
 @code {
     private WeatherForecast[]? forecasts;
+    private List<Seller> sellers;
 
     protected override async Task OnInitializedAsync()
     {
         forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("WeatherForecast");
+        var response = await Http.GetFromJsonAsync<ServiceResponse<List<Seller>>>("Seller/get");
+        if(response!=null && response.Data!=null)
+        {
+            sellers = response.Data;
+        }
     }
 }
