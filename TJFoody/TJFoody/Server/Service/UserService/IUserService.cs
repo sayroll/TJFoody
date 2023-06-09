@@ -4,6 +4,6 @@
     {
         Task<ServiceResponse<User>> Register(string phone,string password,string name);
 
-
+        Task<bool> UserExists(string phone);
     }
 }
