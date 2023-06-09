@@ -1,64 +1,32 @@
 ﻿@page "/sellers"
 @layout MainLayout
+@inject ISellerService SellerService
 
-<Row ItemsPerRow="ItemsPerRow.Four">
-    @foreach (var seller in sellers)
-    {
-        <Card>
-            <BodyTemplate>
-                <img class="img-fluid" src="@seller.ImageUrl" />
-                <h5 class="card-title">@seller.Name</h5>
-                <p class="card-text">@seller.Location</p>
-                <a href="#" class="btn btn-primary">Go</a>
-            </BodyTemplate>
-        </Card>
-    }
-</Row>
-
+@if (SellerService.sellers == null || SellerService.sellers.Count == 0)
+{
+    <span>
+        加载中...
+    </span>
+}
+else
+{
+    <Row ItemsPerRow="ItemsPerRow.Four">
+        @foreach (var seller in SellerService.sellers)
+        {
+            <Card>
+                <BodyTemplate>
+                    <img class="img-fluid" src="@seller.ImageUrl" />
+                    <h5 class="card-title">@seller.Name</h5>
+                    <p class="card-text">@seller.Location</p>
+                    <a href="#" class="btn btn-primary">Go</a>
+                </BodyTemplate>
+            </Card>
+        }
+    </Row>
+}
 @code {
-    private static List<Seller> sellers = new List<Seller>
+    protected override async Task OnInitializedAsync()
     {
-        new Seller
-        {
-            Id = 1,
-            Name = "test",
-            Location = "school",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-        new Seller
-        {
-            Id = 2,
-            Name = "test2",
-            Location = "school2",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-        new Seller
-        {
-            Id = 3,
-            Name = "test2",
-            Location = "school2",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-        new Seller
-        {
-            Id = 4,
-            Name = "test2",
-            Location = "school2",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-                new Seller
-        {
-            Id = 3,
-            Name = "test2",
-            Location = "school2",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-        new Seller
-        {
-            Id = 4,
-            Name = "test2",
-            Location = "school2",
-            ImageUrl = "https://b2b-jiameng.cdn.bcebos.com/online/2021/12/27/e8ca89605c38c3230f5cdee623978a13-349451640596483-959?w=600&h=600&s=34945",
-        },
-    };
+        await SellerService.GetSellers();
+    }
 }

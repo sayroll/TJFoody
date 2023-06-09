@@ -1,5 +1,6 @@
 global using TJFoody.Shared;
 global using System.Net.Http.Json;
+global using TJFoody.Client.Services.SellerService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TJFoody.Client;
@@ -9,5 +10,7 @@ builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after"); 
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+builder.Services.AddScoped<ISellerService, SellerService>();
+
 builder.Services.AddBootstrapBlazor();
 await builder.Build().RunAsync();
