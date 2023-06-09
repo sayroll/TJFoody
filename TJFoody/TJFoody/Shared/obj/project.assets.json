@@ -8,23 +8,23 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\sayrol\\.nuget\\packages\\": {},
-    "D:\\VSC共享\\NuGetPackages": {}
+    "C:\\Users\\climo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj",
+      "projectUniqueName": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj",
       "projectName": "TJFoody.Shared",
-      "projectPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj",
-      "packagesPath": "C:\\Users\\sayrol\\.nuget\\packages\\",
-      "outputPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\obj\\",
+      "projectPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj",
+      "packagesPath": "C:\\Users\\climo\\.nuget\\packages\\",
+      "outputPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "D:\\VSC共享\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sayrol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\climo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],

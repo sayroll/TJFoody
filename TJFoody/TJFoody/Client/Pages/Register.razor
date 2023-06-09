@@ -1,4 +1,5 @@
 @page "/register"
+@inject HttpClient Http
 @inject NavigationManager Navigation
 @inject MessageService MessageService
 @using System.ComponentModel;
@@ -26,7 +27,10 @@
                             </div>
                             <ValidateForm Model="@Model" @ref="ValidatorForm">
                                 <div class="mb-4">
-                                    <BootstrapInput @bind-Value="Model.UserName" class="border-radius" ShowLabel="false" PlaceHolder="请输入账号" />
+                                    <BootstrapInput @bind-Value="Model.UserName" class="border-radius" ShowLabel="false" PlaceHolder="请输入昵称" />
+                                </div>
+                                                                <div class="mb-4">
+                                    <BootstrapInput @bind-Value="Model.Phone" class="border-radius" ShowLabel="false" PlaceHolder="请输入手机号" />
                                 </div>
                                 <div class="row mb-4">
                                     <div class="col-sm-6 mb-3 mb-sm-0">
@@ -56,11 +60,16 @@
     [NotNull]
     private RegisterModel? Model { get; set; } = new();
 
+    User user = new User();
+
+    string errorMessage = string.Empty;
+
     [NotNull]
     private ValidateForm? ValidatorForm { get; set; }
 
     private Task UserLogin()
     {
+        //跳转login页面
         Navigation.NavigateTo("login");
         return Task.CompletedTask;
     }
@@ -70,17 +79,29 @@
         var result = ValidatorForm.Validate();
         if (result)
         {
-            await MessageService.Show(new MessageOption() { Content = "账号注册成功，即将跳转到登陆页面！" });
-            Navigation.NavigateTo("login");
+            user.Name = Model.UserName;
+            user.Password = Model.Password;
+            user.Phone = Model.Phone;
+
+            //await MessageService.Show(new MessageOption() { Content = "账号注册成功，即将跳转到登陆页面！" });
+            //Navigation.NavigateTo("login");
         }
     }
 
     class RegisterModel
     {
         [DataType(DataType.Text)]
-        [Display(Name = "账号")]
+        [Display(Name = "昵称")]
         [Required(ErrorMessage = "{0}不能为空")]
         public string? UserName { get; set; }
+
+
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "手机号")]
+        [Required(ErrorMessage = "{0}不能为空")]
+        [RegularExpression(@"^(((13[0-9]{1})|(15[0-35-9]{1})|(17[0-9]{1})|(18[0-9]{1}))+\d{8})$",
+                   ErrorMessage = "请输入合法手机号")]
+        public string? Phone { get; set; }
 
         [NotNull]
         [Required(ErrorMessage = "请输入密码")]

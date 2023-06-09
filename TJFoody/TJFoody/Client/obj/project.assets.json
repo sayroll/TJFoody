@@ -2317,23 +2317,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\sayrol\\.nuget\\packages\\": {},
-    "D:\\VSC共享\\NuGetPackages": {}
+    "C:\\Users\\climo\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
+      "projectUniqueName": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
       "projectName": "TJFoody.Client",
-      "projectPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
-      "packagesPath": "C:\\Users\\sayrol\\.nuget\\packages\\",
-      "outputPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\obj\\",
+      "projectPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
+      "packagesPath": "C:\\Users\\climo\\.nuget\\packages\\",
+      "outputPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "D:\\VSC共享\\NuGetPackages"
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\sayrol\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\climo\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2349,8 +2349,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj": {
-              "projectPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj"
+            "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj": {
+              "projectPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj"
             }
           }
         }
@@ -2390,12 +2390,6 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "downloadDependencies": [
-          {
-            "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
-            "version": "[6.0.16, 6.0.16]"
-          }
-        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
