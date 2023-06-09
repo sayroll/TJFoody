@@ -3,7 +3,7 @@
 namespace TJFoody.Server.Controllers
 {
     [ApiController]
-    [Route("controller")]
+    [Route("[controller]")]
     public class SellerController : ControllerBase
     {
         private readonly ISellerService _sellerService;
