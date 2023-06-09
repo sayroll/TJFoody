@@ -1,6 +1,28 @@
 ﻿@page "/home"
+@inject HttpClient Http
 <h3>home</h3>
 <h3>home</h3>
+@if(Users.Count()>0)
+{
+    <h3>@Users[0].Phone</h3>
+}
+else
+{
+    <h3>nothing</h3>
+}
+
 
 @code {
+    private static List<User> Users = new List<User>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await Http.GetFromJsonAsync<ServiceResponse<List<User>>>("User/get");
+
+        if(result != null && result.Data != null)
+        {
+            Users = result.Data;
+        }
+    }
+
 }
