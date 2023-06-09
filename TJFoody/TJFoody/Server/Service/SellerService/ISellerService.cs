@@ -8,5 +8,8 @@ namespace TJFoody.Server.Service.SellerService
         Task<ServiceResponse<List<Seller>>> GetSellersAsync();
 
         Task<ServiceResponse<EntityEntry<Seller>>> AddSellerAsync(Seller seller);
+
+        Task<ServiceResponse<Seller>> GetSellerByID(int id);
+
     }
 }
