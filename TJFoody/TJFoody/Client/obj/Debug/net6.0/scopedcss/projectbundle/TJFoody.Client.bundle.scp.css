@@ -1,3 +1,33 @@
+/* /Pages/Index.razor.rz.scp.css */
+a[b-w45sw4cguq] {
+    text-decoration: none;
+}
+/* /Pages/Sellers.razor.rz.scp.css */
+.div[b-j236pjhqtz] {
+    width: 100%;
+    height: 0px;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+    .div img[b-j236pjhqtz] {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+/* /Shared/CuisineDetails.razor.rz.scp.css */
+.div[b-djy35bwqwe] {
+    width: 100%;
+    height: 0px;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+    .div img[b-djy35bwqwe] {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
 /* /Shared/MainLayout.razor.rz.scp.css */
 .page[b-dwr93q9t73] {
     position: relative;
@@ -143,3 +173,16 @@ main[b-dwr93q9t73] {
         display: block;
     }
 }
+/* /Shared/SellerDetails.razor.rz.scp.css */
+.div[b-zz79c7o48u] {
+    width: 100%;
+    height: 0px;
+    padding-bottom: 100%;
+    position: relative;
+}
+
+    .div img[b-zz79c7o48u] {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }

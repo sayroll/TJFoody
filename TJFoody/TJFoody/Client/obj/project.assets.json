@@ -2,6 +2,18 @@
   "version": 3,
   "targets": {
     "net6.0": {
+      "Blazored.LocalStorage/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        }
+      },
       "BootstrapBlazor/7.7.0": {
         "type": "package",
         "dependencies": {
@@ -71,11 +83,11 @@
           "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets": {}
         }
       },
-      "Microsoft.AspNetCore.Components.Authorization/6.0.0": {
+      "Microsoft.AspNetCore.Components.Authorization/6.0.15": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "6.0.0",
-          "Microsoft.AspNetCore.Components": "6.0.0"
+          "Microsoft.AspNetCore.Authorization": "6.0.15",
+          "Microsoft.AspNetCore.Components": "6.0.15"
         },
         "compile": {
           "lib/net6.0/Microsoft.AspNetCore.Components.Authorization.dll": {
@@ -663,6 +675,18 @@
       }
     },
     "net6.0/browser-wasm": {
+      "Blazored.LocalStorage/4.3.0": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.AspNetCore.Components.Web": "6.0.0"
+        },
+        "compile": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        },
+        "runtime": {
+          "lib/net6.0/Blazored.LocalStorage.dll": {}
+        }
+      },
       "BootstrapBlazor/7.7.0": {
         "type": "package",
         "dependencies": {
@@ -732,11 +756,11 @@
           "buildTransitive/netstandard2.0/Microsoft.AspNetCore.Components.Analyzers.targets": {}
         }
       },
-      "Microsoft.AspNetCore.Components.Authorization/6.0.0": {
+      "Microsoft.AspNetCore.Components.Authorization/6.0.15": {
         "type": "package",
         "dependencies": {
-          "Microsoft.AspNetCore.Authorization": "6.0.0",
-          "Microsoft.AspNetCore.Components": "6.0.0"
+          "Microsoft.AspNetCore.Authorization": "6.0.15",
+          "Microsoft.AspNetCore.Components": "6.0.15"
         },
         "compile": {
           "lib/net6.0/Microsoft.AspNetCore.Components.Authorization.dll": {
@@ -1319,6 +1343,20 @@
     }
   },
   "libraries": {
+    "Blazored.LocalStorage/4.3.0": {
+      "sha512": "CfHp9SWN45cM/TM8uw4pELQBfCRtMssCMSOjsEXVWibeYBn36TLpzw+J1vsC2Su2BEQ3Et19A5+GqK1S3kHbTQ==",
+      "type": "package",
+      "path": "blazored.localstorage/4.3.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "blazored.localstorage.4.3.0.nupkg.sha512",
+        "blazored.localstorage.nuspec",
+        "icon.png",
+        "lib/net6.0/Blazored.LocalStorage.dll",
+        "lib/net7.0/Blazored.LocalStorage.dll"
+      ]
+    },
     "BootstrapBlazor/7.7.0": {
       "sha512": "5PvYtLyV4MtKCciiOoIBZGCnxiZ01eU3VWgl2q+ElffsAdp8ErR9qt8jmLBTfzodS8pp5yBx/GkB23FfZex6kQ==",
       "type": "package",
@@ -1464,10 +1502,10 @@
         "microsoft.aspnetcore.components.analyzers.nuspec"
       ]
     },
-    "Microsoft.AspNetCore.Components.Authorization/6.0.0": {
-      "sha512": "AdrLj0S71GgcGUm7MMzwjzpkmAO044nFhzmvT+x/acB0HNyolWo6jMZBXxEm93iQDSeFlfRQGsw+bD+6mdMhYg==",
+    "Microsoft.AspNetCore.Components.Authorization/6.0.15": {
+      "sha512": "noOYFiKPngcXIFsDgPBWk/MRPoIO3//1RDlrYST9yFL1lLbhQTYvdturCIOwjYjJbyMst8ecMfXqYXVaSAn0KA==",
       "type": "package",
-      "path": "microsoft.aspnetcore.components.authorization/6.0.0",
+      "path": "microsoft.aspnetcore.components.authorization/6.0.15",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
@@ -1475,7 +1513,7 @@
         "THIRD-PARTY-NOTICES.txt",
         "lib/net6.0/Microsoft.AspNetCore.Components.Authorization.dll",
         "lib/net6.0/Microsoft.AspNetCore.Components.Authorization.xml",
-        "microsoft.aspnetcore.components.authorization.6.0.0.nupkg.sha512",
+        "microsoft.aspnetcore.components.authorization.6.0.15.nupkg.sha512",
         "microsoft.aspnetcore.components.authorization.nuspec"
       ]
     },
@@ -2310,30 +2348,32 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "Blazored.LocalStorage >= 4.3.0",
       "BootstrapBlazor >= 7.7.0",
+      "Microsoft.AspNetCore.Components.Authorization >= 6.0.15",
       "Microsoft.AspNetCore.Components.WebAssembly >= 6.0.15",
       "Microsoft.AspNetCore.Components.WebAssembly.DevServer >= 6.0.15",
       "TJFoody.Shared >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\climo\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\sayrol\\.nuget\\packages\\": {},
+    "D:\\VSC共享\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
+      "projectUniqueName": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
       "projectName": "TJFoody.Client",
-      "projectPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
-      "packagesPath": "C:\\Users\\climo\\.nuget\\packages\\",
-      "outputPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Client\\obj\\",
+      "projectPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\TJFoody.Client.csproj",
+      "packagesPath": "C:\\Users\\sayrol\\.nuget\\packages\\",
+      "outputPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Client\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        "D:\\VSC共享\\NuGetPackages"
       ],
       "configFilePaths": [
-        "C:\\Users\\climo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\sayrol\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
@@ -2349,8 +2389,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj": {
-              "projectPath": "D:\\Github_Space\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj"
+            "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj": {
+              "projectPath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Shared\\TJFoody.Shared.csproj"
             }
           }
         }
@@ -2365,9 +2405,17 @@
       "net6.0": {
         "targetAlias": "net6.0",
         "dependencies": {
+          "Blazored.LocalStorage": {
+            "target": "Package",
+            "version": "[4.3.0, )"
+          },
           "BootstrapBlazor": {
             "target": "Package",
             "version": "[7.7.0, )"
+          },
+          "Microsoft.AspNetCore.Components.Authorization": {
+            "target": "Package",
+            "version": "[6.0.15, )"
           },
           "Microsoft.AspNetCore.Components.WebAssembly": {
             "target": "Package",
@@ -2390,6 +2438,12 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.NETCore.App.Runtime.Mono.browser-wasm",
+            "version": "[6.0.16, 6.0.16]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
