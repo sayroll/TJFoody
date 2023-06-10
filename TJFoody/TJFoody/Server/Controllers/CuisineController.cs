@@ -32,7 +32,6 @@ namespace TJFoody.Server.Controllers
             return Ok(response);
         }
 
-        //还不能用
         [HttpGet("GetCuisineByID/{cuisineId}")]
         public async Task<ActionResult<ServiceResponse<Cuisine>>> GetCuisineByID(int cuisineId)
         {

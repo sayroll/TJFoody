@@ -1,57 +1,52 @@
 ﻿@page "/cuisineDetail/{id:int}"
 @layout MainLayout
-@inject ICuisineService CuisinService
+@inject ICuisineService CuisineService
 
 
-    <div>
+<div>
+    <Card>
+        <BodyTemplate>
+            <div style="float:left;width:200px">
+                <img src="@cuisine.ImageUrl" class="img-fluid" alt="@cuisine.Name" />
+            </div>
+            <div style="float:left;padding-left:20px">
+                <h5 style="font-weight:bold;color:#7F82BB;font-size:30px;padding-bottom:10px">@cuisine.Name</h5>
+                <p style="padding-bottom:5px">
+                    @cuisine.Description
+                </p>
+                <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
+            </div>
+        </BodyTemplate>
+    </Card>
+    <br />
+    <center>
+        <h5>-- 菜品评论 --</h5>
+    </center>
+    <br>
+    @foreach (var sellerReview in sellerReviews)
+    {
         <Card>
             <BodyTemplate>
-                <div style="float:left;width:150px">
-                    <img src="@cuisine.ImageUrl" class="img-fluid" alt="@cuisine.Name" />
+                <div style="float:left;width:6%">
+                    <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
                 </div>
-                <div style="float:left;padding-left:20px">
-                    <h5 style="font-weight:bold;color:#7F82BB;font-size:30px;padding-bottom:10px">@cuisine.Name</h5>
-                <span>
-                    @cuisine.Description
-                </span>
-                    <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
+                <div style="float:left;padding-left:20px;width:80%">
+                    <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
+
+                    <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
+                    <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
+                </div>
+                <div style="float:right;">
+                    <h5 style="color:grey;font-size:15px;">@sellerReview.Date</h5>
                 </div>
             </BodyTemplate>
         </Card>
-        <br />
-        <center>
-        <h5>-- 菜品评论 --</h5>
-    </center>
-        <br>
-        @foreach (var sellerReview in sellerReviews)
-        {
-            <Card>
-                <BodyTemplate>
-                    <div style="float:left;width:6%">
-                        <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
-                    </div>
-                    <div style="float:left;padding-left:20px;width:80%">
-                        <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
-
-                        <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
-                        <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
-                    </div>
-                    <div style="float:right;">
-                        <h5 style="color:grey;font-size:15px;">@sellerReview.Date</h5>
-                    </div>
-                </BodyTemplate>
-            </Card>
-        }
-    </div>
+    }
+</div>
 
 @code {
     //private Cuisine? cuisine = null;
-    private Cuisine cuisine = new Cuisine
-    {
-        ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg",
-        Name = "鸡排饭",
-        Description = "11111111111111"
-    };
+    private Cuisine cuisine = new Cuisine();
 
     private int BindValue1 { get; set; } = 3;
 
@@ -60,7 +55,7 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        //cuisine = SellerService.sellers.Find(p => p.Id == Id);
+        cuisine = await CuisineService.GetCuisineById(Id);
 
     }
 

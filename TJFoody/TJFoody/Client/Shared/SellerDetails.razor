@@ -1,7 +1,9 @@
 ﻿@page "/seller/{id:int}"
 @layout MainLayout
+@inject NavigationManager Navigation
 @inject ISellerService SellerService
 @inject ICuisineService CuisineService
+
 
 @if (seller == null)
 {
@@ -97,32 +99,10 @@ else
 
     private Task JumpDetail(int id)
     {
-        //Navigation.NavigateTo("/seller/" + id);
+        Navigation.NavigateTo("/cuisinedetail/" + id);
 
         return Task.CompletedTask;
     }
-
-    //private List<Cuisine> cuisines = new List<Cuisine>
-    //{
-    //    new Cuisine
-    //    {
-    //        Id = 1,
-    //        Name = "拌饭",
-    //        ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg"
-    //    },
-    //    new Cuisine
-    //    {
-    //        Id = 2,
-    //        Name = "拌饭",
-    //        ImageUrl = "https://img.zcool.cn/community/010fb35c0f0ffea80120925286ab97.jpg@1280w_1l_2o_100sh.jpg"
-    //    },
-    //    new Cuisine
-    //    {
-    //        Id = 3,
-    //        Name = "拌饭",
-    //        ImageUrl = "https://img.zcool.cn/community/01a57c5cac0080a801214168204c78.jpg@1280w_1l_2o_100sh.jpg"
-    //    }
-    //};
 
     private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>
     {
