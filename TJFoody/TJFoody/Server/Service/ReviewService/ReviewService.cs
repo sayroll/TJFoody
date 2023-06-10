@@ -12,18 +12,20 @@ namespace TJFoody.Server.Service.ReviewService
         {
             _context = infoContext;
         }
-        async public Task<ServiceResponse<EntityEntry<SellerReview>>> AddSellerReview(SellerReview sellerReview)
+        async public Task<ServiceResponse<SellerReview>> AddSellerReview(SellerReview sellerReview)
         {
-            var result = new ServiceResponse<EntityEntry<SellerReview>>();
+            var result = new ServiceResponse<SellerReview>();
             try
             {
-                result.Data = await _context.SellerReviews.AddAsync(sellerReview);
+                await _context.SellerReviews.AddAsync(sellerReview);
                 await _context.SaveChangesAsync();
 
                 result.Message = "成功";
+                result.Data = sellerReview;
             }
             catch (Exception ex)
             {
+
                 result.Success = false;
                 result.Message = "添加评论时发生错误：" + ex.Message;
             }

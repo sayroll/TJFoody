@@ -5,6 +5,6 @@ namespace TJFoody.Server.Service.ReviewService
 {
     public interface IReviewService
     {
-        Task<ServiceResponse<EntityEntry<SellerReview>>> AddSellerReview(SellerReview sellerReview);
+        Task<ServiceResponse<SellerReview>> AddSellerReview(SellerReview sellerReview);
     }
 }

@@ -75,6 +75,7 @@
             {
                 errorMessage = string.Empty;
                 await LocalStorage.SetItemAsync("authToken", response.Data);
+                await LocalStorage.SetItemAsync("phone", user.Phone);
                 await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await MessageService.Show(new MessageOption() { Content = "登陆成功" });
                 Navigation.NavigateTo("");

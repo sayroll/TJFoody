@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using TJFoody.Shared;
 
 namespace TJFoody.Server.Models
 {
@@ -43,7 +42,6 @@ namespace TJFoody.Server.Models
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
-                    .ValueGeneratedNever()
                     .HasColumnName("id");
 
                 entity.Property(e => e.Description)
@@ -77,7 +75,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("content");
 
                 entity.Property(e => e.CuisineId)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(11)
                     .HasColumnName("cuisine_ID");
 
                 entity.Property(e => e.Date)
@@ -89,7 +87,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("rate");
 
                 entity.Property(e => e.UserId)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(11)
                     .HasColumnName("user_ID");
             });
 
@@ -112,6 +110,10 @@ namespace TJFoody.Server.Models
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .HasColumnName("name");
+
+                entity.Property(e => e.Poi)
+                    .HasMaxLength(255)
+                    .HasColumnName("poi");
             });
 
             modelBuilder.Entity<SellerReview>(entity =>
@@ -139,7 +141,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("seller_ID");
 
                 entity.Property(e => e.UserId)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(11)
                     .HasColumnName("user_ID");
             });
 
