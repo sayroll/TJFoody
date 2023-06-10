@@ -31,6 +31,6 @@
         await LocalStorage.RemoveItemAsync("authToken");
         await LocalStorage.RemoveItemAsync("phone");
         await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        NavigationManager.NavigateTo("login");
+        NavigationManager.NavigateTo("/");
     }
 }
