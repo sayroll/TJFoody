@@ -31,5 +31,16 @@ namespace TJFoody.Server.Controllers
             var response = await _cuisineService.AddCuisineAsync(cuisine);
             return Ok(response);
         }
+
+        //还不能用
+        [HttpGet("GetCuisineByID/{cuisineId}")]
+        public async Task<ActionResult<ServiceResponse<Cuisine>>> GetCuisineByID(int cuisineId)
+        {
+            var response = await _cuisineService.GetCuisineByIDAsync(cuisineId);
+            return Ok(response);
+        }
+
+           
+
     }
 }

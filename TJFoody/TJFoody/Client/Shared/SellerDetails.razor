@@ -27,8 +27,16 @@ else
         <br>
         <Tab IsBorderCard="true" IsLazyLoadTabItem="true" >
             <TabItem Text="菜品">
+                @if (cuisines.Count == 0)
+                {
+                    <span>
+                        未收录菜品
+                    </span>
+                }
+                else
+                {
                 <Row ItemsPerRow="ItemsPerRow.Four">
-                    @foreach (var cuisine in cuisineList)
+                    @foreach (var cuisine in cuisines)
                     {
                         <Card @onclick="(()=> JumpDetail(cuisine.Id))">
                             <BodyTemplate>
@@ -42,6 +50,8 @@ else
                         </Card>
                     }
                 </Row>
+                }
+                
             </TabItem>
             <TabItem Text="评价">
                 @foreach (var sellerReview in sellerReviews)
@@ -75,12 +85,12 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    private List<Cuisine> cuisineList = new List<Cuisine>();
+    private List<Cuisine> cuisines = new List<Cuisine>();
 
     protected override async Task OnParametersSetAsync()
     {
         seller = SellerService.sellers.Find(p => p.Id == Id);
-        cuisineList = await CuisineService.GetCuisinesBySellerId(Id);
+        cuisines = await CuisineService.GetCuisinesBySellerId(Id);
         
         
     }
@@ -92,27 +102,27 @@ else
         return Task.CompletedTask;
     }
 
-    private List<Cuisine> cuisines = new List<Cuisine>
-    {
-        new Cuisine
-        {
-            Id = 1,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg"
-        },
-        new Cuisine
-        {
-            Id = 2,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/010fb35c0f0ffea80120925286ab97.jpg@1280w_1l_2o_100sh.jpg"
-        },
-        new Cuisine
-        {
-            Id = 3,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/01a57c5cac0080a801214168204c78.jpg@1280w_1l_2o_100sh.jpg"
-        }
-    };
+    //private List<Cuisine> cuisines = new List<Cuisine>
+    //{
+    //    new Cuisine
+    //    {
+    //        Id = 1,
+    //        Name = "拌饭",
+    //        ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg"
+    //    },
+    //    new Cuisine
+    //    {
+    //        Id = 2,
+    //        Name = "拌饭",
+    //        ImageUrl = "https://img.zcool.cn/community/010fb35c0f0ffea80120925286ab97.jpg@1280w_1l_2o_100sh.jpg"
+    //    },
+    //    new Cuisine
+    //    {
+    //        Id = 3,
+    //        Name = "拌饭",
+    //        ImageUrl = "https://img.zcool.cn/community/01a57c5cac0080a801214168204c78.jpg@1280w_1l_2o_100sh.jpg"
+    //    }
+    //};
 
     private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>
     {

@@ -1,73 +1,57 @@
-﻿@page "/cuisine/{id:int}"
+﻿@page "/cuisineDetail/{id:int}"
 @layout MainLayout
-@inject ISellerService SellerService
+@inject ICuisineService CuisinService
 
-@if (seller == null)
-{
-    <span>
-        加载中...
-    </span>
-}
-else
-{
+
     <div>
-        <Card >
+        <Card>
             <BodyTemplate>
                 <div style="float:left;width:150px">
-                    <img src="@seller.ImageUrl" class="img-fluid" alt="@seller.Name" />
+                    <img src="@cuisine.ImageUrl" class="img-fluid" alt="@cuisine.Name" />
                 </div>
                 <div style="float:left;padding-left:20px">
-                    <h5 style="font-weight:bold;color:#7F82BB;font-size:30px;padding-bottom:10px">@seller.Name</h5>
-                    <p style="color:gray;margin-bottom:5px;"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @seller.Location</p>
+                    <h5 style="font-weight:bold;color:#7F82BB;font-size:30px;padding-bottom:10px">@cuisine.Name</h5>
+                <span>
+                    @cuisine.Description
+                </span>
                     <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
                 </div>
             </BodyTemplate>
         </Card>
+        <br />
+        <center>
+        <h5>-- 菜品评论 --</h5>
+    </center>
         <br>
-        <Tab IsBorderCard="true" IsLazyLoadTabItem="true" >
-            <TabItem Text="菜品">
-                <Row ItemsPerRow="ItemsPerRow.Four">
-                    @foreach (var cuisine in cuisines)
-                    {
-                        <Card @onclick="(()=> JumpDetail(cuisine.Id))">
-                            <BodyTemplate>
+        @foreach (var sellerReview in sellerReviews)
+        {
+            <Card>
+                <BodyTemplate>
+                    <div style="float:left;width:6%">
+                        <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
+                    </div>
+                    <div style="float:left;padding-left:20px;width:80%">
+                        <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
 
-                                <div class="div">
-                                    <img class="img-fluid" style="object-fit: cover;" src="@cuisine.ImageUrl" />
-                                </div>
-                                <h5 style="padding-top:10px;font-weight:bold;color:#7F82BB">@cuisine.Name</h5>
-                                <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
-                            </BodyTemplate>
-                        </Card>
-                    }
-                </Row>
-            </TabItem>
-            <TabItem Text="评价">
-                @foreach (var sellerReview in sellerReviews)
-                {
-                    <Card>
-                        <BodyTemplate>
-                            <div style="float:left;width:6%">
-                                <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
-                            </div>
-                            <div style="float:left;padding-left:20px;width:80%">
-                                <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
-                               
-                                <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
-                                <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
-                            </div>
-                            <div style ="float:right;">
-                                <h5 style="color:grey;font-size:15px;">@sellerReview.Date</h5>
-                            </div>
-                        </BodyTemplate>
-                    </Card>
-                }
-            </TabItem>
-        </Tab>
+                        <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
+                        <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
+                    </div>
+                    <div style="float:right;">
+                        <h5 style="color:grey;font-size:15px;">@sellerReview.Date</h5>
+                    </div>
+                </BodyTemplate>
+            </Card>
+        }
     </div>
-}
+
 @code {
-    private Seller? seller = null;
+    //private Cuisine? cuisine = null;
+    private Cuisine cuisine = new Cuisine
+    {
+        ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg",
+        Name = "鸡排饭",
+        Description = "11111111111111"
+    };
 
     private int BindValue1 { get; set; } = 3;
 
@@ -76,38 +60,9 @@ else
 
     protected override async Task OnParametersSetAsync()
     {
-        seller = SellerService.sellers.Find(p => p.Id == Id);
+        //cuisine = SellerService.sellers.Find(p => p.Id == Id);
 
     }
-
-    private Task JumpDetail(int id)
-    {
-        //Navigation.NavigateTo("/seller/" + id);
-
-        return Task.CompletedTask;
-    }
-
-    private List<Cuisine> cuisines = new List<Cuisine>
-    {
-        new Cuisine
-        {
-            Id = 1,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/0179d15cac0081a80121416861241f.jpg@1280w_1l_2o_100sh.jpg"
-        },
-        new Cuisine
-        {
-            Id = 2,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/010fb35c0f0ffea80120925286ab97.jpg@1280w_1l_2o_100sh.jpg"
-        },
-        new Cuisine
-        {
-            Id = 3,
-            Name = "拌饭",
-            ImageUrl = "https://img.zcool.cn/community/01a57c5cac0080a801214168204c78.jpg@1280w_1l_2o_100sh.jpg"
-        }
-    };
 
     private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>
     {
@@ -143,7 +98,7 @@ else
         public string? Date { get; set; }
         public string? Content { get; set; }
         public string? Avartar { get; set; }
-        public int Rate{ get; set; }
+        public int Rate { get; set; }
     }
 
 }
