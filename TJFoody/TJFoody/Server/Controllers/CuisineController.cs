@@ -15,8 +15,9 @@ namespace TJFoody.Server.Controllers
             _cuisineService = cuisineService;
         }
 
-        [HttpPost]
-        [Route("GetCuisineBySellerID")]
+        //[HttpPost]
+        //[Route("GetCuisineBySellerID")]
+        [HttpGet("{id}")]
         public async Task<ActionResult<ServiceResponse<List<Cuisine>>>> GetCuisineBySellerID(int id)
         {
             var response = await _cuisineService.GetCuisineBySellerIDAsync(id);

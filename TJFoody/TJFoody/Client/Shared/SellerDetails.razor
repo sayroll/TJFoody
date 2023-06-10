@@ -1,6 +1,7 @@
 ﻿@page "/seller/{id:int}"
 @layout MainLayout
 @inject ISellerService SellerService
+@inject ICuisineService CuisineService
 
 @if (seller == null)
 {
@@ -27,7 +28,7 @@ else
         <Tab IsBorderCard="true" IsLazyLoadTabItem="true" >
             <TabItem Text="菜品">
                 <Row ItemsPerRow="ItemsPerRow.Four">
-                    @foreach (var cuisine in cuisines)
+                    @foreach (var cuisine in cuisineList)
                     {
                         <Card @onclick="(()=> JumpDetail(cuisine.Id))">
                             <BodyTemplate>
@@ -74,10 +75,14 @@ else
     [Parameter]
     public int Id { get; set; }
 
+    private List<Cuisine> cuisineList = new List<Cuisine>();
+
     protected override async Task OnParametersSetAsync()
     {
         seller = SellerService.sellers.Find(p => p.Id == Id);
-
+        cuisineList = await CuisineService.GetCuisinesBySellerId(Id);
+        
+        
     }
 
     private Task JumpDetail(int id)
