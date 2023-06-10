@@ -2,9 +2,12 @@
 @inject NavigationManager Navigation
 @inject MessageService MessageService
 @inject IUserService UserService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject ILocalStorageService LocalStorage
 @using System.ComponentModel;
 @using System.Diagnostics.CodeAnalysis;
 @using System.ComponentModel.DataAnnotations;
+@using Blazored.LocalStorage;
 
 <style>
     .border-radius {
@@ -71,6 +74,8 @@
             if(response.Success)
             {
                 errorMessage = string.Empty;
+                await LocalStorage.SetItemAsync("authToken", response.Data);
+                await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await MessageService.Show(new MessageOption() { Content = "登陆成功" });
                 Navigation.NavigateTo("");
             }

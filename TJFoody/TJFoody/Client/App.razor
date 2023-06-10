@@ -1,15 +1,17 @@
-﻿<BootstrapBlazorRoot>
-    <Router AppAssembly="@typeof(App).Assembly">
-        <Found Context="routeData">
-            <PageTitle>Title</PageTitle>
-            <RouteView RouteData="@routeData" />
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
-        </Found>
-        <NotFound>
-            <PageTitle>Not found</PageTitle>
-            <LayoutView Layout="@typeof(MainLayout)">
-                <p> Not Found</p>
-            </LayoutView>
-        </NotFound>
-    </Router>
-</BootstrapBlazorRoot>
+﻿<CascadingAuthenticationState>
+    <BootstrapBlazorRoot>
+        <Router AppAssembly="@typeof(App).Assembly">
+            <Found Context="routeData">
+                <PageTitle>Title</PageTitle>
+                <AuthorizeRouteView RouteData="@routeData" />
+                <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+            </Found>
+            <NotFound>
+                <PageTitle>Not found</PageTitle>
+                <LayoutView Layout="@typeof(MainLayout)">
+                    <p> Not Found</p>
+                </LayoutView>
+            </NotFound>
+        </Router>
+    </BootstrapBlazorRoot>
+</CascadingAuthenticationState>
