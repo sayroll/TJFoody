@@ -1,4 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Security.Cryptography;
 using TJFoody.Server.Models;
 using TJFoody.Shared;
 
@@ -7,9 +11,38 @@ namespace TJFoody.Server.Service.UserService
     public class UserService : IUserService
     {
         private readonly infoContext _infoContext;
-        public UserService(infoContext infoContext)
+        private readonly IConfiguration _configuration;
+        public UserService(infoContext infoContext, IConfiguration configuration)
         {
             _infoContext = infoContext;
+            _configuration = configuration;
+
+        }
+
+        public async Task<ServiceResponse<string>> Login(User request)
+        {
+            var response = new ServiceResponse<string>();
+            var user = await _infoContext.Users.FirstOrDefaultAsync(u=>u.Phone.Equals(request.Phone));
+
+            if (user == null)
+            {
+                response.Success = false;
+                response.Message = "手机号没有被注册";
+            }
+            else
+            {
+                if(user.Password == request.Password)
+                {
+                    response.Data = CreateToken(request);
+                    response.Message = "登陆成功";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "密码不正确";
+                }
+            }
+            return response;
         }
 
         public async Task<ServiceResponse<User>> Register(string phone, string password, string name)
@@ -56,6 +89,28 @@ namespace TJFoody.Server.Service.UserService
                 return true;
             }
             return false;
+        }
+
+        private string CreateToken(User user)
+        {
+            List<Claim> claims = new List<Claim>
+            { 
+                new Claim(ClaimTypes.NameIdentifier, user.Phone),
+                new Claim(ClaimTypes.Name, user.Phone)
+            };
+
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.
+                GetBytes(_configuration.GetSection("AppSettings:Token").Value));
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var token = new JwtSecurityToken(
+                claims:claims,
+                expires:DateTime.Now.AddDays(1),
+                signingCredentials:creds);
+
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+            return jwt;
         }
     }
 }

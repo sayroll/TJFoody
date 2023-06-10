@@ -1,6 +1,7 @@
 @page "/login"
 @inject NavigationManager Navigation
 @inject MessageService MessageService
+@inject IUserService UserService
 @using System.ComponentModel;
 @using System.Diagnostics.CodeAnalysis;
 @using System.ComponentModel.DataAnnotations;
@@ -53,13 +54,31 @@
     [NotNull]
     private ValidateForm? ValidatorForm { get; set; }
 
+    User user = new User();
+
+
+    string errorMessage = string.Empty;
+
     private async Task OnValidator()
     {
         var result = ValidatorForm.Validate();
         if (result)
         {
-            await MessageService.Show(new MessageOption() { Content = "登陆成功" });
-            Navigation.NavigateTo("");
+            user.Phone = Model.UserName;
+            user.Password = Model.Password;
+
+            var response = await UserService.Login(user);
+            if(response.Success)
+            {
+                errorMessage = string.Empty;
+                await MessageService.Show(new MessageOption() { Content = "登陆成功" });
+                Navigation.NavigateTo("");
+            }
+            else
+            {
+                errorMessage = response.Message;
+                await MessageService.Show(new MessageOption() { Content = response.Message });
+            }
         }
     }
 
