@@ -3,6 +3,7 @@ global using TJFoody.Shared;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore; 
 using TJFoody.Server.Models;
+using TJFoody.Server.Service.CuisineService;
 using TJFoody.Server.Service.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IUserService,UserService>();
+builder.Services.AddScoped<ICuisineService, CuisineService>();
 
 var app = builder.Build();
 

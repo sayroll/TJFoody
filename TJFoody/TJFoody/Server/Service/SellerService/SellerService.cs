@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TJFoody.Server.Models;
-using TJFoody.Shared;
 
 namespace TJFoody.Server.Service.SellerService
 {
