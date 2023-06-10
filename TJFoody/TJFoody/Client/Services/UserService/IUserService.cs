@@ -1,6 +1,9 @@
 ﻿namespace TJFoody.Client.Services.UserService
 {
-    public class IUserService
+    public interface IUserService
     {
+        Task<ServiceResponse<User>> Register(User user);
+
+        Task<ServiceResponse<string>> Login(User user);
     }
 }

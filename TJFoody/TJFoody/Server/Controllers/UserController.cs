@@ -19,11 +19,33 @@ namespace TJFoody.Server.Controllers
 
         [HttpPost]
         [Route("register")]
-        public async Task<ActionResult<ServiceResponse<User>>> Register(string phone,string password,string name)
+        public async Task<ActionResult<ServiceResponse<User>>> Register(User user)
         {
 
-            var response = await _userService.Register(phone, password, name);
-            return Ok(response);
+            var response = await _userService.Register(user.Phone, user.Password, user.Name);
+            if(response.Success)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return BadRequest(response);
+            }
+        }
+
+        [HttpPost]
+        [Route("login")]
+        public async Task<ActionResult<ServiceResponse<string>>> Login(User request)
+        {
+            var response = await _userService.Login(request);
+            if(!response.Success) 
+            {
+                return BadRequest(response);            
+            }
+            else
+            {
+                return Ok(response); 
+            }
         }
     }
 }

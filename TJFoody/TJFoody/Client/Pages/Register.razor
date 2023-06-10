@@ -2,6 +2,7 @@
 @inject HttpClient Http
 @inject NavigationManager Navigation
 @inject MessageService MessageService
+@inject IUserService UserService
 @using System.ComponentModel;
 @using System.Diagnostics.CodeAnalysis;
 @using System.ComponentModel.DataAnnotations;
@@ -47,6 +48,11 @@
                                     <Button Text="用户登陆" Color="Color.Info" class="border-radius w-100" OnClick="@UserLogin"></Button>
                                 </a>
                             </ValidateForm>
+                            <div class="text-danger">
+                                <span>
+                                    @errorMessage
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -83,8 +89,18 @@
             user.Password = Model.Password;
             user.Phone = Model.Phone;
 
-            //await MessageService.Show(new MessageOption() { Content = "账号注册成功，即将跳转到登陆页面！" });
-            //Navigation.NavigateTo("login");
+            var response = await UserService.Register(user);
+            if(!response.Success)
+            {
+                errorMessage = response.Message;
+                await MessageService.Show(new MessageOption() { Content = response.Message });
+            }
+            else
+            {
+                errorMessage = string.Empty;
+                await MessageService.Show(new MessageOption() { Content = "账号注册成功，即将跳转到登陆页面！" });
+                Navigation.NavigateTo("login");
+            }
         }
     }
 
