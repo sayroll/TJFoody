@@ -162,3 +162,10 @@ D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.
 D:\Github_Space\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.FontAwesome.dll
 E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.dll
 E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\BootstrapBlazor.FontAwesome.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Blazored.LocalStorage.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Microsoft.AspNetCore.Components.Authorization.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Microsoft.IdentityModel.Abstractions.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Microsoft.IdentityModel.JsonWebTokens.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Microsoft.IdentityModel.Logging.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\Microsoft.IdentityModel.Tokens.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Server\bin\Debug\net6.0\System.IdentityModel.Tokens.Jwt.dll
