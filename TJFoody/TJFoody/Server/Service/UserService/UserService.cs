@@ -19,6 +19,22 @@ namespace TJFoody.Server.Service.UserService
 
         }
 
+        public async Task<ServiceResponse<User>> GetUserByPhone(string phone)
+        {
+            var response = new ServiceResponse<User>();
+            var user = await _infoContext.Users.FirstOrDefaultAsync(x => x.Phone.Equals(phone));
+            if(user != null)
+            {
+                response.Data = user;
+                response.Message = "找到了";
+            }
+            else
+            {
+                response.Success= false;
+            }
+            return response;
+        }
+
         public async Task<ServiceResponse<string>> Login(User request)
         {
             var response = new ServiceResponse<string>();
@@ -112,5 +128,7 @@ namespace TJFoody.Server.Service.UserService
             var jwt = new JwtSecurityTokenHandler().WriteToken(token);
             return jwt;
         }
+
+
     }
 }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using TJFoody.Server.Models;
 using TJFoody.Shared;
 using TJFoody.Server.Service.UserService;
+using System.Runtime.CompilerServices;
 
 namespace TJFoody.Server.Controllers
 {
@@ -45,6 +46,20 @@ namespace TJFoody.Server.Controllers
             else
             {
                 return Ok(response); 
+            }
+        }
+
+        [HttpGet("getByPhone/{phone}")]
+        public async Task<ActionResult<ServiceResponse<User>>> getUserByPhone(string phone)
+        {
+            var response = await _userService.GetUserByPhone(phone);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
             }
         }
     }

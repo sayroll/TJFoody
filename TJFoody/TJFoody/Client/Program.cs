@@ -2,6 +2,7 @@ global using TJFoody.Shared;
 global using System.Net.Http.Json;
 global using TJFoody.Client.Services.SellerService;
 global using TJFoody.Client.Services.UserService;
+global using TJFoody.Client.Services.ReviewService;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components.Web;
@@ -18,6 +19,7 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.
 builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
 builder.Services.AddScoped<AuthenticationStateProvider,CustomAuthStateProvider>();

@@ -2,6 +2,7 @@
 @layout MainLayout
 @inject ISellerService SellerService
 @inject NavigationManager Navigation
+@inject IReviewService ReviewService
 
 @if (SellerService.sellers == null || SellerService.sellers.Count == 0)
 {

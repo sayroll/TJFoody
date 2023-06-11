@@ -7,5 +7,8 @@
         Task<bool> UserExists(string phone);
 
         Task<ServiceResponse<string>> Login(User request);
+
+        Task<ServiceResponse<User>> GetUserByPhone(string phone);
+
     }
 }

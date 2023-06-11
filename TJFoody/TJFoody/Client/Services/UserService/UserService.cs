@@ -1,4 +1,6 @@
-﻿namespace TJFoody.Client.Services.UserService
+﻿using System.Net.Http.Json;
+
+namespace TJFoody.Client.Services.UserService
 {
     public class UserService : IUserService
     {
@@ -6,6 +8,13 @@
         public UserService(HttpClient httpClient)
         {
             _http = httpClient;
+        }
+
+        public async Task<ServiceResponse<User>> GetUserByPhone(string phone)
+        {
+            string url = $"User/getByPhone";
+            var result = await _http.PostAsJsonAsync(url,phone);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<User>>();
         }
 
         public async Task<ServiceResponse<string>> Login(User user)

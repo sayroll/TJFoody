@@ -24,7 +24,7 @@ namespace TJFoody.Server.Controllers
 
         [HttpPost]
         [Route("addCuisineReview")]
-        public async Task<ActionResult<ServiceResponse<SellerReview>>> AddCuisineReview(CuisineReview cuisineReview)
+        public async Task<ActionResult<ServiceResponse<CuisineReview>>> AddCuisineReview(CuisineReview cuisineReview)
         {
             var response = await _reviewService.AddCuisineReview(cuisineReview);
             return Ok(response);

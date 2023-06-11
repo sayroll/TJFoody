@@ -1,8 +1,14 @@
 ﻿@page "/seller/{id:int}"
+@using System.Diagnostics.CodeAnalysis;
+@using System.ComponentModel.DataAnnotations;
 @layout MainLayout
 @inject NavigationManager Navigation
 @inject ISellerService SellerService
 @inject ICuisineService CuisineService
+@inject IReviewService ReviewService
+@inject ILocalStorageService LocalStorage
+@inject IUserService UserService
+@inject MessageService MessageService
 
 
 @if (seller == null)
@@ -23,6 +29,11 @@ else
                     <h5 style="font-weight:bold;color:#7F82BB;font-size:30px;padding-bottom:10px">@seller.Name</h5>
                     <p style="color:gray;margin-bottom:5px;"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @seller.Location</p>
                     <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
+                </div>
+                <div style="float:left;padding-left:20px">
+                    <Button Text="编辑评论" OnClickWithoutRender="@ShowEditedDialog" />
+                    <Button Text="提交评论" OnClickWithoutRender="@submitReview" />
+
                 </div>
             </BodyTemplate>
         </Card>
@@ -60,20 +71,20 @@ else
                 
             </TabItem>
             <TabItem Text="评价">
-                @foreach (var sellerReview in sellerReviews)
+                @foreach (var sellerReview in ReviewService.sellerReviews)
                 {
                     <Card>
                         <BodyTemplate>
                             <div style="float:left;width:6%">
-                                <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
+                                <img class="img-fluid" style="object-fit: cover;" src="https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0" />
                             </div>
                             <div style="float:left;padding-left:20px;width:80%">
-                                <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
-                               
-                                <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
+                                <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserId</h5>
+
+                                <Rate Value="@sellerReview.Rate.Value" IsReadonly="true" ShowValue="true" />
                                 <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
                             </div>
-                            <div style ="float:right;">
+                            <div style="float:right;">
                                 <h5 style="color:grey;font-size:15px;">@sellerReview.Date</h5>
                             </div>
                         </BodyTemplate>
@@ -85,20 +96,29 @@ else
 }
 @code {
     private Seller? seller = null;
+    private SellerReview review = new SellerReview();
 
-    private int BindValue1 { get; set; } = 3;
+    private double BindValue1 { get; set; } = 3;
+
+
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService{ get; set; }
 
     [Parameter]
     public int Id { get; set; }
-
+    protected override async Task OnInitializedAsync()
+    {
+        await ReviewService.getReviews();
+        BindValue1 = ReviewService.calculateSellerRate();
+    }
     private List<Cuisine> cuisines = new List<Cuisine>();
 
     protected override async Task OnParametersSetAsync()
     {
         seller = SellerService.sellers.Find(p => p.Id == Id);
         cuisines = await CuisineService.GetCuisinesBySellerId(Id);
-        
-        
+        await ReviewService.getReviews();
     }
 
     private Task JumpDetail(int id)
@@ -108,41 +128,78 @@ else
         return Task.CompletedTask;
     }
 
-    private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>
-    {
-        new SellerReviewModel
-        {
-            UserName = "test",
-            Date = "2023.6.23 12:02",
-            Content = "启动“十一五”项目立项工作。根据国家语言战略和标准化工作的需要，国外语言规划经典研究、国家外语发展战略研究、中国当代语境下的语言教育问题研究、语言教育对语言能力的解释度与华人社区汉语规范的宽式原则、夹用英文的中文文本的标点符号用法、ISO 10646汉字字际关系研究、语言普查与数字化等一批项目立项。",
-            Avartar = "https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0",
-            Rate = 4
-        },
-        new SellerReviewModel
-        {
-            UserName = "test",
-            Date = "2023.6.23 12:02",
-            Content = "好吃好吃好吃",
-            Avartar = "https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0",
-            Rate = 4
-        },
-        new SellerReviewModel
-        {
-            UserName = "test",
-            Date = "2023.6.23 12:02",
-            Content = "好吃好吃好吃",
-            Avartar = "https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0",
-            Rate = 3
-        }
-    };
+    private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>();
 
-    class SellerReviewModel
+
+    public class reviewContent
     {
-        public string? UserName { get; set; }
-        public string? Date { get; set; }
-        public string? Content { get; set; }
-        public string? Avartar { get; set; }
-        public int Rate{ get; set; }
+        [Range(0, 5, ErrorMessage = "评分必须在0-5之间")]
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "评分")]
+        public int rate{ get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
+        [Display(Name = "评论内容")]
+        public string? text{ get; set; }
     }
 
+
+    private reviewContent model = new reviewContent
+    {
+        rate = 5,
+        text = "真的很不错"
+    };
+
+    private async Task ShowEditedDialog()
+    {
+        var items = Utility.GenerateEditorItems<reviewContent>();
+        var item = items.First(i => i.GetFieldName() == nameof(reviewContent.rate));
+        var option = new EditDialogOption<reviewContent>()
+            {
+                Title = "评价框",
+                Model = model,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    return Task.FromResult(true);
+                }
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task submitReview()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        SellerReview sellerReview = new SellerReview
+        {
+                SellerId = Id,
+                UserId = phone,
+                Content = model.text,
+                Date = DateTime.Now.ToString(),
+                Rate = model.rate
+        };
+        var response = await ReviewService.addSerllerReview(sellerReview);
+        if(response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "评论成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+
+        BindValue1 = ReviewService.calculateSellerRate();
+        StateHasChanged();
+    }
 }
