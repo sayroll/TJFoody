@@ -71,7 +71,7 @@ else
                 
             </TabItem>
             <TabItem Text="评价">
-                @foreach (var sellerReview in ReviewService.sellerReviews)
+                @foreach (var sellerReview in sellerReviews)
                 {
                     <Card>
                         <BodyTemplate>
@@ -107,10 +107,24 @@ else
 
     [Parameter]
     public int Id { get; set; }
+
+    public void getReviews()
+    {
+        sellerReviews.Clear();
+        foreach(var review in ReviewService.sellerReviews)
+        {
+            if(review.SellerId == Id)
+            {
+                sellerReviews.Add(review);
+            }
+        }
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await ReviewService.getReviews();
-        BindValue1 = ReviewService.calculateSellerRate();
+        BindValue1 = ReviewService.calculateSellerRate(Id);
+        getReviews();
     }
     private List<Cuisine> cuisines = new List<Cuisine>();
 
@@ -118,7 +132,9 @@ else
     {
         seller = SellerService.sellers.Find(p => p.Id == Id);
         cuisines = await CuisineService.GetCuisinesBySellerId(Id);
+        BindValue1 = ReviewService.calculateSellerRate(Id);
         await ReviewService.getReviews();
+        getReviews();
     }
 
     private Task JumpDetail(int id)
@@ -128,7 +144,7 @@ else
         return Task.CompletedTask;
     }
 
-    private List<SellerReviewModel> sellerReviews = new List<SellerReviewModel>();
+    private List<SellerReview> sellerReviews = new List<SellerReview>();
 
 
     public class reviewContent
@@ -198,8 +214,9 @@ else
             await MessageService.Show(new MessageOption() { Content = response.Message });
         }
 
-
-        BindValue1 = ReviewService.calculateSellerRate();
+        await ReviewService.getReviews();
+        getReviews();
+        BindValue1 = ReviewService.calculateSellerRate(Id);
         StateHasChanged();
     }
 }

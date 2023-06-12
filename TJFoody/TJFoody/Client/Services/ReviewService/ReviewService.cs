@@ -93,17 +93,51 @@ namespace TJFoody.Client.Services.ReviewService
             }
         }
 
-        public double calculateSellerRate()
+        public double calculateSellerRate(int sellerID)
         {
             int number = 0;
             double sum = 0;
             foreach(var review in sellerReviews )
             {
-                number++;
-                sum += review.Rate.Value;
+                if(review.SellerId == sellerID)
+                {
+                    number++;
+                    sum += review.Rate.Value;
+                }
             }
+            double result;
+            if (number == 0)
+            {
+                result = 0;
+            }
+            else
+            {
+                result = sum / number;
+            }
+            return result;
+        }
 
-            double result = sum / number;
+        public double calculateCuisineRate(int cuisineID)
+        {
+            int number = 0;
+            double sum = 0;
+            foreach(var review in cuisineReviews )
+            {
+                if(review.CuisineId == cuisineID)
+                {
+                    number++;
+                    sum += review.Rate.Value;
+                }
+            }
+            double result;
+            if( number == 0 )
+            {
+                result = 0;
+            }
+            else
+            {
+                result = sum / number;
+            }
             return result;
         }
     }

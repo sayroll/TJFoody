@@ -75,7 +75,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("content");
 
                 entity.Property(e => e.CuisineId)
-                    .HasMaxLength(11)
+                    .HasColumnType("int(11)")
                     .HasColumnName("cuisine_ID");
 
                 entity.Property(e => e.Date)

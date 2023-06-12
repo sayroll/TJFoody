@@ -18,7 +18,8 @@
 
         Task getSellerReview();
 
-        double calculateSellerRate();
+        double calculateSellerRate(int sellerID);
+        double calculateCuisineRate(int cuisineID);
 
     }
 }
