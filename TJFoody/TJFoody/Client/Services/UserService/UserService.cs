@@ -10,11 +10,12 @@ namespace TJFoody.Client.Services.UserService
             _http = httpClient;
         }
 
-        public async Task<ServiceResponse<User>> GetUserByPhone(string phone)
+        public async Task<User> GetUserByPhone(string phone)
         {
-            string url = $"User/getByPhone";
-            var result = await _http.PostAsJsonAsync(url,phone);
-            return await result.Content.ReadFromJsonAsync<ServiceResponse<User>>();
+            string url = $"User/getByPhone/{phone}";
+            Console.WriteLine(url);
+            var result = await _http.GetFromJsonAsync<ServiceResponse<User>>(url);
+            return result.Data;
         }
 
         public async Task<ServiceResponse<string>> Login(User user)

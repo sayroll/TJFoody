@@ -3,9 +3,11 @@ global using TJFoody.Shared;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore; 
 using TJFoody.Server.Models;
+using TJFoody.Server.Hubs;
 using TJFoody.Server.Service.CuisineService;
 using TJFoody.Server.Service.ReviewService;
 using TJFoody.Server.Service.UserService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,8 +20,16 @@ builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddSignalR();
+builder.Services.AddResponseCompression(opts =>
+{
+    opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
+         new[] { "application/octet-stream" });
+});
 
 var app = builder.Build();
+
+app.UseResponseCompression();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -43,6 +53,7 @@ app.UseRouting();
 
 app.MapRazorPages();
 app.MapControllers();
+app.MapHub<ChatHub>("/chathub");
 app.MapFallbackToFile("index.html");
 
 app.Run();

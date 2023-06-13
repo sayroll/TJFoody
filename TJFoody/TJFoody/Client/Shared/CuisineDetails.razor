@@ -39,12 +39,12 @@
         <Card>
             <BodyTemplate>
                 <div style="float:left;width:6%">
-                    <img class="img-fluid" style="object-fit: cover;" src="https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0" />
+                    <img class="img-fluid" style="object-fit: cover;" src="@review.Avartar" />
                 </div>
                 <div style="float:left;padding-left:20px;width:80%">
-                    <h5 style="font-weight:bold;color:#7F82BB">@review.UserId</h5>
+                    <h5 style="font-weight:bold;color:#7F82BB">@review.UserName</h5>
 
-                    <Rate Value="@review.Rate.Value" IsReadonly="true" ShowValue="true" />
+                    <Rate Value="@review.Rate" IsReadonly="true" ShowValue="true" />
                     <p style="color:grey;font-size:15px;padding-top:10px">@review.Content</p>
                 </div>
                 <div style="float:right;">
@@ -116,6 +116,7 @@
     private async Task submitReview()
     {
         string phone = await LocalStorage.GetItemAsStringAsync("phone");
+
         phone = phone.Replace("\"", "");
         CuisineReview cuisineReview = new CuisineReview
             {
@@ -137,7 +138,7 @@
 
         await ReviewService.getReviews();
         BindValue1 = ReviewService.calculateCuisineRate(Id);
-        getReviews();
+        await getReviews();
         StateHasChanged();
     }
 
@@ -145,7 +146,8 @@
     {
         await ReviewService.getReviews();
         BindValue1 = ReviewService.calculateCuisineRate(Id);
-        getReviews();
+        await getReviews();
+
     }
 
     protected override async Task OnParametersSetAsync()
@@ -153,25 +155,36 @@
         cuisine = await CuisineService.GetCuisineById(Id);
         BindValue1 = ReviewService.calculateCuisineRate(Id);
         await ReviewService.getReviews();
-        getReviews();
+        await getReviews();
     }
 
-    private List<CuisineReview> cuisineReviews = new List<CuisineReview>();
+    private List<ReviewModel> cuisineReviews = new List<ReviewModel>();
 
 
-    public void getReviews()
+    public async Task getReviews()
     {
         cuisineReviews.Clear();
         foreach(var review in ReviewService.cuisineReviews)
         {
             if(review.CuisineId == Id)
             {
-                cuisineReviews.Add(review);
+                string phone = review.UserId;
+                phone = phone.Replace("\"", "");
+                User user = await UserService.GetUserByPhone(phone);
+                ReviewModel reviewModel = new ReviewModel
+                    {
+                        UserName = user.Name,
+                        Date = review.Date,
+                        Content = review.Content,
+                        Avartar = user.Avartar,
+                        Rate = review.Rate.Value
+                    };
+                cuisineReviews.Add(reviewModel);
             }
         }
     }
 
-    class SellerReviewModel
+    class ReviewModel
     {
         public string? UserName { get; set; }
         public string? Date { get; set; }

@@ -10,7 +10,7 @@ namespace TJFoody.Client.Services.ReviewService
         private readonly HttpClient _http;
         public List<SellerReview> sellerReviews { get; set; }
         public List<CuisineReview> cuisineReviews { get; set; }
-        public List<SellerReviewModel> sellerReviewModels { get; set; }
+
 
 
 
@@ -65,33 +65,7 @@ namespace TJFoody.Client.Services.ReviewService
             }
         }
 
-        public async Task getSellerReview()
-        {
-            foreach (var review in sellerReviews)
-            {
-                string phone = review.UserId;
-                var response = await _http.GetFromJsonAsync<ServiceResponse<User>>($"User/getByPhone/{phone}");
-                User reviewer = response.Data;
-                if(reviewer == null)
-                {
-                    reviewer = new User
-                    {
-                        Name = "匿名",
-                        Avartar = "https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0"
-                    };
-                }
-                SellerReviewModel model = new SellerReviewModel
-                {
-                    UserName = reviewer.Name,
-                    Date = review.Date,
-                    Content = review.Content,
-                    Avartar = reviewer.Avartar,
-                    Rate = (int)review.Rate
-                };
 
-                sellerReviewModels.Add(model);
-            }
-        }
 
         public double calculateSellerRate(int sellerID)
         {

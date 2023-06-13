@@ -6,6 +6,6 @@
 
         Task<ServiceResponse<string>> Login(User user);
 
-        Task<ServiceResponse<User>> GetUserByPhone(string phone);
+        Task<User> GetUserByPhone(string phone);
     }
 }

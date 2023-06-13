@@ -57,7 +57,6 @@ else
                                     <img class="img-fluid" style="object-fit: cover;" src="@cuisine.ImageUrl" />
                                 </div>
                                 <h5 style="padding-top:10px;font-weight:bold;color:#7F82BB">@cuisine.Name</h5>
-                                <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
                             </BodyTemplate>
                         </Card>
                     }
@@ -76,12 +75,12 @@ else
                     <Card>
                         <BodyTemplate>
                             <div style="float:left;width:6%">
-                                <img class="img-fluid" style="object-fit: cover;" src="https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0" />
+                                <img class="img-fluid" style="object-fit: cover;" src="@sellerReview.Avartar" />
                             </div>
                             <div style="float:left;padding-left:20px;width:80%">
-                                <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserId</h5>
+                                <h5 style="font-weight:bold;color:#7F82BB">@sellerReview.UserName</h5>
 
-                                <Rate Value="@sellerReview.Rate.Value" IsReadonly="true" ShowValue="true" />
+                                <Rate Value="@sellerReview.Rate" IsReadonly="true" ShowValue="true" />
                                 <p style="color:grey;font-size:15px;padding-top:10px">@sellerReview.Content</p>
                             </div>
                             <div style="float:right;">
@@ -108,16 +107,36 @@ else
     [Parameter]
     public int Id { get; set; }
 
-    public void getReviews()
+    public async Task getReviews()
     {
         sellerReviews.Clear();
         foreach(var review in ReviewService.sellerReviews)
         {
             if(review.SellerId == Id)
             {
-                sellerReviews.Add(review);
+                string phone = review.UserId;
+                phone = phone.Replace("\"", "");
+                User user = await UserService.GetUserByPhone(phone);
+                ReviewModel reviewModel = new ReviewModel
+                    {
+                        UserName = user.Name,
+                        Date = review.Date,
+                        Content = review.Content,
+                        Avartar = user.Avartar,
+                        Rate = review.Rate.Value
+                    };
+                sellerReviews.Add(reviewModel);
             }
         }
+    }
+
+    class ReviewModel
+    {
+        public string? UserName { get; set; }
+        public string? Date { get; set; }
+        public string? Content { get; set; }
+        public string? Avartar { get; set; }
+        public int Rate { get; set; }
     }
 
     private Task getPicture(string poi)
@@ -130,7 +149,7 @@ else
     {
         await ReviewService.getReviews();
         BindValue1 = ReviewService.calculateSellerRate(Id);
-        getReviews();
+        await getReviews();
     }
     private List<Cuisine> cuisines = new List<Cuisine>();
 
@@ -140,7 +159,7 @@ else
         cuisines = await CuisineService.GetCuisinesBySellerId(Id);
         BindValue1 = ReviewService.calculateSellerRate(Id);
         await ReviewService.getReviews();
-        getReviews();
+        await getReviews();
         await getPicture(seller.Poi);
     }
 
@@ -151,7 +170,7 @@ else
         return Task.CompletedTask;
     }
 
-    private List<SellerReview> sellerReviews = new List<SellerReview>();
+    private List<ReviewModel> sellerReviews = new List<ReviewModel>();
 
 
     public class reviewContent
@@ -224,8 +243,9 @@ else
         }
 
         await ReviewService.getReviews();
-        getReviews();
+        await getReviews();
         BindValue1 = ReviewService.calculateSellerRate(Id);
         StateHasChanged();
     }
+
 }
