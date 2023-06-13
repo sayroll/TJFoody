@@ -20,7 +20,9 @@ namespace TJFoody.Server.Models
         public virtual DbSet<CuisineReview> CuisineReviews { get; set; } = null!;
         public virtual DbSet<Seller> Sellers { get; set; } = null!;
         public virtual DbSet<SellerReview> SellerReviews { get; set; } = null!;
+        public virtual DbSet<Team> Teams { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<UserJoinTeam> UserJoinTeams { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -67,7 +69,6 @@ namespace TJFoody.Server.Models
 
                 entity.Property(e => e.Id)
                     .HasColumnType("int(11)")
-                    .ValueGeneratedNever()
                     .HasColumnName("id");
 
                 entity.Property(e => e.Content)
@@ -145,6 +146,40 @@ namespace TJFoody.Server.Models
                     .HasColumnName("user_ID");
             });
 
+            modelBuilder.Entity<Team>(entity =>
+            {
+                entity.ToTable("team");
+
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
+
+                entity.Property(e => e.Count)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("count")
+                    .HasComment("人数");
+
+                entity.Property(e => e.DeadLine)
+                    .HasMaxLength(255)
+                    .HasColumnName("dead_line");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .HasColumnName("description");
+
+                entity.Property(e => e.LeaderId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("leader_id");
+
+                entity.Property(e => e.Name)
+                    .HasMaxLength(255)
+                    .HasColumnName("name");
+
+                entity.Property(e => e.Tag)
+                    .HasMaxLength(255)
+                    .HasColumnName("tag");
+            });
+
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(e => e.Phone)
@@ -165,6 +200,27 @@ namespace TJFoody.Server.Models
                 entity.Property(e => e.Password)
                     .HasMaxLength(255)
                     .HasColumnName("password");
+            });
+
+            modelBuilder.Entity<UserJoinTeam>(entity =>
+            {
+                entity.ToTable("user_join_team");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.TeamId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("team_id");
+
+                entity.Property(e => e.Time)
+                    .HasMaxLength(255)
+                    .HasColumnName("time");
+
+                entity.Property(e => e.UserId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("user_id");
             });
 
             OnModelCreatingPartial(modelBuilder);
