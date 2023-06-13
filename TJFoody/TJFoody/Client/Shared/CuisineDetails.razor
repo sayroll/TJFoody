@@ -24,15 +24,14 @@
                 </p>
                 <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
             </div>
-            <div style="float:left;padding-left:20px">
-                <Button Text="编辑评论" OnClickWithoutRender="@ShowEditedDialog" />
-                <Button Text="提交评论" OnClickWithoutRender="@submitReview" />
-            </div>
         </BodyTemplate>
     </Card>
     <br />
     <center>
         <h5>-- 菜品评论 --</h5>
+        <div >
+            <Button Text="发布评论" OnClickWithoutRender="@ShowEditedDialog" />
+        </div>
     </center>
     <br>
     @foreach (var review in cuisineReviews)
@@ -106,8 +105,10 @@
                 },
                 OnEditAsync = context =>
                 {
+                    submitReview();
                     return Task.FromResult(true);
-                }
+                },
+                SaveButtonText = "提交评价"
             };
         await DialogService.ShowEditDialog(option);
     }

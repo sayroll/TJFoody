@@ -30,16 +30,11 @@ else
                     <p style="color:gray;margin-bottom:5px;"><i class="fa-solid fa-location-dot" aria-hidden="true"></i> @seller.Location</p>
                     <Rate Value="@BindValue1" IsReadonly="true" ShowValue="true" />
                 </div>
-                <div style="float:left;padding-left:20px">
-                    <Button Text="编辑评论" OnClickWithoutRender="@ShowEditedDialog" />
-                    <Button Text="提交评论" OnClickWithoutRender="@submitReview" />
-
-                </div>
             </BodyTemplate>
         </Card>
         <br>
         <div style="width:100%;text-align:center">
-        <img class="img-fluid" src="https://restapi.amap.com/v3/staticmap?location=121.218134,31.287330&zoom=15&size=500*110&markers=mid,,A:121.218134,31.287330&scale=2&key=89d990bd817cdb3c7169b7582b6d4739" />
+        <img class="img-fluid" src="@imageSource" />
         </div>
         <br>
         <Tab IsBorderCard="true" IsLazyLoadTabItem="true" >
@@ -71,6 +66,11 @@ else
                 
             </TabItem>
             <TabItem Text="评价">
+                <center>
+                <div style="padding-bottom:10px;">
+                    <Button Text="发布评价" OnClickWithoutRender="@ShowEditedDialog" />
+                </div>
+                </center>
                 @foreach (var sellerReview in sellerReviews)
                 {
                     <Card>
@@ -99,7 +99,7 @@ else
     private SellerReview review = new SellerReview();
 
     private double BindValue1 { get; set; } = 3;
-
+    private string? imageSource = "";
 
     [Inject]
     [NotNull]
@@ -120,6 +120,12 @@ else
         }
     }
 
+    private Task getPicture(string poi)
+    {
+        imageSource = $"https://restapi.amap.com/v3/staticmap?location={poi}&zoom=15&size=500*110&markers=mid,,A:{poi}&scale=2&key=89d990bd817cdb3c7169b7582b6d4739";
+        return Task.CompletedTask;
+    }
+
     protected override async Task OnInitializedAsync()
     {
         await ReviewService.getReviews();
@@ -135,6 +141,7 @@ else
         BindValue1 = ReviewService.calculateSellerRate(Id);
         await ReviewService.getReviews();
         getReviews();
+        await getPicture(seller.Poi);
     }
 
     private Task JumpDetail(int id)
@@ -186,8 +193,10 @@ else
                 },
                 OnEditAsync = context =>
                 {
+                    submitReview();
                     return Task.FromResult(true);
-                }
+                },
+                SaveButtonText = "提交评价"
             };
         await DialogService.ShowEditDialog(option);
     }
