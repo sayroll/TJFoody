@@ -27,5 +27,19 @@ namespace TJFoody.Server.Controllers
             var result = await _teamService.GetTeamsAsync();
             return Ok(result);
         }
+
+        [HttpGet("getTeamByLeaderId/{leaderId}")]
+        public async Task<ActionResult<ServiceResponse<List<Team>>>> getTeamByLeaderId(string leaderId)
+        {
+            var response = await _teamService.GetTeamByLeaderId(leaderId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
     }
 }

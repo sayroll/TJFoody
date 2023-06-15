@@ -6,5 +6,7 @@
         Task GetTeams();
 
         Task<ServiceResponse<Team>> addTeam(Team team);
+
+        Task<List<Team>> getTeamByLeaderId(string userId);
     }
 }
