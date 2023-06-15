@@ -168,7 +168,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("description");
 
                 entity.Property(e => e.LeaderId)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(255)
                     .HasColumnName("leader_id");
 
                 entity.Property(e => e.Name)
@@ -219,7 +219,7 @@ namespace TJFoody.Server.Models
                     .HasColumnName("time");
 
                 entity.Property(e => e.UserId)
-                    .HasColumnType("int(11)")
+                    .HasMaxLength(255)
                     .HasColumnName("user_id");
             });
 

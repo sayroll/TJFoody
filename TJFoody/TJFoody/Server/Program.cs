@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using TJFoody.Server.Models;
 using TJFoody.Server.Service.CuisineService;
 using TJFoody.Server.Service.ReviewService;
+using TJFoody.Server.Service.TeamService;
 using TJFoody.Server.Service.UserService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,7 @@ builder.Services.AddScoped<ISellerService, SellerService>();
 builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
+builder.Services.AddScoped<ITeamService, TeamService>();
 
 var app = builder.Build();
 

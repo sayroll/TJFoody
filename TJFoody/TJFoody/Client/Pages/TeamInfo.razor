@@ -1,0 +1,240 @@
+﻿@page "/team"
+@using System.ComponentModel.DataAnnotations;
+@using System.Diagnostics.CodeAnalysis;
+@using System.Reflection;
+@layout MainLayout
+@inject ITeamService TeamService
+@inject ILocalStorageService LocalStorage
+@inject MessageService MessageService
+
+
+<PageTitle>组队信息</PageTitle>
+
+<Tab IsCard="true" IsBorderCard="true">
+    <TabItem Text="组队广场">
+
+        <center>
+            <div style="padding-bottom:20px;">
+                <Button Text="发布组队信息" OnClickWithoutRender="@ShowEditedDialog" />
+            </div>
+        </center>
+        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+            @if (TeamService.teams == null || TeamService.teams.Count == 0)
+            {
+                <span>
+                    加载中...
+                </span>
+            }
+            else
+            {
+                <Row ItemsPerRow="ItemsPerRow.Two" @key="TeamService.teams">
+                    @foreach (var team in TeamService.teams)
+                    {
+                        <Card>
+                            <BodyTemplate>
+                                <div style="float:left;width:6%">
+                                    <img class="img-fluid" style="object-fit: cover;" src="https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0" />
+                                </div>
+                                <div style="float:left;padding-left:20px;width:90%">
+                                    <p style="font-weight:bold;font-size:25px">@team.Name</p>
+
+                                    <Tag Color="@GetTagClass(team.Tag)">@team.Tag</Tag>
+                                    <p style="color:grey;font-size:15px;padding-top:10px;height:80px;overflow:hidden;text-overflow:ellipsis;">@team.Description</p>
+                                </div>
+                                <div>
+                                    <div style="float:left;">
+                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold;padding-top:8px"><i class="fa-solid fa-clock" aria-hidden="true"></i> @team.DeadLine</h5>
+                                    </div>
+                                    <div style="float:right;">
+                                        <Button Text="加入队伍" Color="Color.Primary" OnClickWithoutRender="@ShowEditedDialog" />
+                                    </div>
+                                    <div style="float:right;padding-right:20px;padding-top:8px">
+                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold"><i class="fa-solid fa-person" aria-hidden="true"></i>&nbsp @team.Count/@team.Count</h5>
+                                    </div>
+
+                                </div>
+                            </BodyTemplate>
+                        </Card>
+                    }
+                </Row>
+            }
+        </div>
+    </TabItem>
+    <TabItem Text="我创建的队伍">
+        <div>我的队伍</div>
+    </TabItem>
+    <TabItem Text="我加入的队伍">
+        <div>我的加入</div>
+    </TabItem>
+</Tab>
+
+@code {
+
+    protected override async Task OnInitializedAsync()
+    {
+        await TeamService.GetTeams();
+
+    }
+
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    private Color GetTagClass(string tag)
+    {
+        switch (tag)
+        {
+            case "拼单拼车":
+                return Color.Success;
+            case "学术科研":
+                return Color.Primary;
+            case "竞赛组队":
+                return Color.Danger;
+            case "娱乐活动":
+                return Color.Warning;
+            case "其他":
+            default:
+                return Color.Secondary;
+        }
+    }
+    public class AddTeamContent
+    {
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "标题")]
+        public string Name { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 2, Filterable = true, Searchable = true)]
+        [Display(Name = "队伍描述")]
+        public string Description { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 3)]
+        [Display(Name = "标签")]
+        public EnumTag? Tag { get; set; }
+
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "人数必须大于0")]
+        [AutoGenerateColumn(Order = 4, Filterable = true, Searchable = true)]
+        [Display(Name = "总人数")]
+        public int Count { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 5, FormatString = "yyyy-MM-dd")]
+        [Display(Name = "截止时间")]
+        [CustomDeadlineValidation]
+        public DateTime DeadLine { get; set; }
+    }
+
+    public class CustomDeadlineValidationAttribute : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if (value is DateTime deadline)
+            {
+                DateTime tomorrow = DateTime.Today.AddDays(1);
+
+                if (deadline < tomorrow )
+                {
+                    return new ValidationResult("截止时间必须在未来");
+                }
+            }
+
+            return ValidationResult.Success;
+        }
+    }
+
+    private AddTeamContent model = new AddTeamContent
+        {
+            Name = "",
+            Description = "",
+            Tag= EnumTag.First,
+            Count= 0,
+            DeadLine=DateTime.Now,
+        };
+
+    public enum EnumTag
+    {
+        [Display(Name = "拼单拼车")]
+        First,
+
+        [Display(Name = "学术科研")]
+        Second,
+
+        [Display(Name = "竞赛组队")]
+        Third,
+
+        [Display(Name = "娱乐活动")]
+        Fourth,
+
+        [Display(Name = "其他")]
+        Fifth,
+    }
+
+    private async Task ShowEditedDialog()
+    {
+        var items = Utility.GenerateEditorItems<AddTeamContent>();
+        //var item = items.First(i => i.GetFieldName() == nameof(AddTeamContent.rate));
+        var option = new EditDialogOption<AddTeamContent>()
+            {
+                Title = "发布组队信息",
+                Model = model,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    submitTeam();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "发布"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    public static string GetEnumDisplayName(Enum enumValue)
+    {
+        Type enumType = enumValue.GetType();
+        string enumName = enumValue.ToString();
+        MemberInfo memberInfo = enumType.GetMember(enumName)[0];
+        DisplayAttribute displayAttribute = memberInfo.GetCustomAttribute<DisplayAttribute>();
+        string displayName = displayAttribute?.Name ?? enumName;
+        return displayName;
+    }
+
+    private async Task submitTeam()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+
+
+        string tag = GetEnumDisplayName(model.Tag);
+        Team team = new Team
+            {
+                Name = model.Name,
+                LeaderId = phone,
+                Description = model.Description,
+                Tag = tag,
+                Count = model.Count,
+                DeadLine = model.DeadLine.ToString("yyyy-MM-dd")
+            };
+        var response = await TeamService.addTeam(team);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "发布队伍成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+        await TeamService.GetTeams();
+        StateHasChanged();
+    }
+}

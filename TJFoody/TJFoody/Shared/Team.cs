@@ -9,7 +9,7 @@ namespace TJFoody.Shared
         public string? Name { get; set; }
         public string? Description { get; set; }
         public string? Tag { get; set; }
-        public int? LeaderId { get; set; }
+        public string? LeaderId { get; set; }
         /// <summary>
         /// 人数
         /// </summary>
