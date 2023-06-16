@@ -5,6 +5,8 @@
 @layout MainLayout
 @inject ITeamService TeamService
 @inject ILocalStorageService LocalStorage
+@inject IUserJoinTeamService UserJoinTeamService
+@inject IUserService UserService
 @inject MessageService MessageService
 
 
@@ -28,12 +30,12 @@
             else
             {
                 <Row ItemsPerRow="ItemsPerRow.Two" @key="TeamService.teams">
-                    @foreach (var team in TeamService.teams)
+                    @foreach (var team in teamInfoModels)
                     {
                         <Card>
                             <BodyTemplate>
                                 <div style="float:left;width:6%">
-                                    <img class="img-fluid" style="object-fit: cover;" src="https://ts1.cn.mm.bing.net/th/id/R-C.0bab160015bf9e56450d5fded33bd448?rik=VFMstq3mAZG1pg&riu=http%3a%2f%2fwww.qzqn8.com%2fwp-content%2fuploads%2f2020%2f02%2f3-9.jpg&ehk=pnkhUlGCDYmxisEuCwYL4zXW92froAxt%2f0B5i9AYAkY%3d&risl=&pid=ImgRaw&r=0" />
+                                    <img class="img-fluid" style="object-fit: cover;" src="@team.Avartar" />
                                 </div>
                                 <div style="float:left;padding-left:20px;width:90%">
                                     <p style="font-weight:bold;font-size:25px">@team.Name</p>
@@ -46,11 +48,11 @@
                                         <h5 style="color:royalblue;font-size:20px;font-weight:bold;padding-top:8px"><i class="fa-solid fa-clock" aria-hidden="true"></i> @team.DeadLine</h5>
                                     </div>
                                     <div style="float:right;">
-                                        <Button Text="加入队伍" Color="Color.Primary" OnClickWithoutRender="@ShowEditedDialog" />
+                                        <Button Text="加入队伍" Color="Color.Primary" @onclick="() => joinTeam(team.TeamId)" />
                                     </div>
                                     <div style="float:right;padding-right:20px;padding-top:8px">
-                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold"><i class="fa-solid fa-person" aria-hidden="true"></i>&nbsp @team.Count/@team.Count</h5>
-                                    </div>
+                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold"><i class="fa-solid fa-person" aria-hidden="true"></i>&nbsp @team.CurCount/@team.Count</h5>
+                                    </div>`
 
                                 </div>
                             </BodyTemplate>
@@ -61,10 +63,96 @@
         </div>
     </TabItem>
     <TabItem Text="我创建的队伍">
-        <div>我的队伍</div>
+        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+            @if (TeamService.teams == null || TeamService.teams.Count == 0)
+            {
+                <span>
+                    加载中...
+                </span>
+            }
+            else
+            {
+                @foreach (var team in LeadTeams)
+                {
+                    <Card>
+                        <BodyTemplate>
+                            <div style="float:right;width:30%;text-align: right;">
+                                <h5 style="color:royalblue;font-size:20px;font-weight:bold;padding-top:8px"><i class="fa-solid fa-clock" aria-hidden="true"></i> @team.DeadLine</h5>
+                            </div>
+                            <div style="float:left;padding-left:20px;width:70%">
+                                <p style="font-weight:bold;font-size:25px">@team.Name</p>
+
+                                <Tag Color="@GetTagClass(team.Tag)">@team.Tag</Tag>
+                                <p style="color:grey;font-size:15px;padding-top:15px;height:40px;overflow:hidden;text-overflow:ellipsis;">@team.Description</p>
+                                <h5 style="color:royalblue;font-size:20px;font-weight:bold;padding-bottom:10px"><i class="fa-solid fa-person" aria-hidden="true"></i>&nbsp @team.CurCount/@team.Count</h5>
+                            </div>
+                            <div>
+                                <div style="float:right;">
+                                    <Button Text="解散队伍" Color="Color.Danger" @onclick="() => DisbandTeam(team.TeamId)" />
+                                </div>
+                                <div style="float:left;width:80%;">
+                                    @foreach (var member in team.memberId)
+                                    {
+                                        <div style="padding-left:10px">
+                                            <Card style="width:140px;float:left;" IsCenter="true">
+                                                <BodyTemplate>
+                                                    <p>@member </p>
+                                                    <a class="btn btn-primary" @onclick="() => QuitMember(team.TeamId,member)">踢出队伍</a>
+                                                </BodyTemplate>
+                                            </Card>
+                                        </div>
+                                    }
+                                </div>
+
+                            </div>
+                        </BodyTemplate>
+                    </Card>
+                }
+            }
+        </div>
     </TabItem>
     <TabItem Text="我加入的队伍">
-        <div>我的加入</div>
+        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+            @if (JoinedTeams == null || JoinedTeams.Count == 0)
+            {
+                <span>
+                    未加入队伍
+                </span>
+            }
+            else
+            {
+                <Row ItemsPerRow="ItemsPerRow.Two" Data="@JoinedTeams">
+                    @foreach (var team in JoinedTeams)
+                    {
+                        <Card>
+                            <BodyTemplate>
+                                <div style="float:left;width:6%">
+                                    <img class="img-fluid" style="object-fit: cover;" src="@team.Avartar" />
+                                </div>
+                                <div style="float:left;padding-left:20px;width:90%">
+                                    <p style="font-weight:bold;font-size:25px">@team.Name</p>
+
+                                    <Tag Color="@GetTagClass(team.Tag)">@team.Tag</Tag>
+                                    <p style="color:grey;font-size:15px;padding-top:10px;height:80px;overflow:hidden;text-overflow:ellipsis;">@team.Description</p>
+                                </div>
+                                <div>
+                                    <div style="float:left;">
+                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold;padding-top:8px"><i class="fa-solid fa-clock" aria-hidden="true"></i> @team.DeadLine</h5>
+                                    </div>
+                                    <div style="float:right;">
+                                        <Button Text="退出队伍" Color="Color.Danger" @onclick="() => QuitTeam(team.TeamId)" />
+                                    </div>
+                                    <div style="float:right;padding-right:20px;padding-top:8px">
+                                        <h5 style="color:royalblue;font-size:20px;font-weight:bold"><i class="fa-solid fa-person" aria-hidden="true"></i>&nbsp @team.CurCount/@team.Count</h5>
+                                    </div>`
+
+                                </div>
+                            </BodyTemplate>
+                        </Card>
+                    }
+                </Row>
+            }
+        </div>
     </TabItem>
 </Tab>
 
@@ -72,13 +160,133 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await TeamService.GetTeams();
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
 
+        await TeamService.GetTeams();
+        await GetTeams();
+        await GetLeadTeams();
+        await GetJoinedTeams();
     }
 
     [Inject]
     [NotNull]
     private DialogService? DialogService { get; set; }
+
+    class TeamInfoModel
+    {
+        public int TeamId { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Tag { get; set; }
+        public string? LeaderId { get; set; }
+        public int? CurCount { get; set; }
+        public int? Count { get; set; }
+        public string? DeadLine { get; set; }
+        public string? Avartar { get; set; }
+    }
+
+    class MyTeamModel
+    {
+        public int TeamId { get; set; }
+        public string? Name { get; set; }
+        public string? Description { get; set; }
+        public string? Tag { get; set; }
+        public int? CurCount { get; set; }
+        public int? Count { get; set; }
+        public string? DeadLine { get; set; }
+        public List<string>? memberId { get; set; }
+    }
+
+    string userId = null;
+
+    private List<TeamInfoModel> teamInfoModels = new List<TeamInfoModel>();
+    private List<MyTeamModel> LeadTeams = new List<MyTeamModel>();
+    private List<TeamInfoModel> JoinedTeams = new List<TeamInfoModel>();
+
+
+
+
+    private async Task QuitTeam(int TeamId)
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        var response = await UserJoinTeamService.QuitTeam(phone, TeamId);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "退出队伍成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+        await TeamService.GetTeams();
+        await GetTeams();
+        await GetJoinedTeams();
+        StateHasChanged();
+    }
+
+    private async Task QuitMember(int TeamId,string memberId)
+    {
+        var response = await UserJoinTeamService.QuitTeam(memberId, TeamId);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "踢出队员成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await TeamService.GetTeams();
+        await GetTeams();
+        await GetJoinedTeams();
+        StateHasChanged();
+    }
+    private async Task DisbandTeam(int TeamId)
+    {
+        var response = await UserJoinTeamService.DisbandTeam(TeamId);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "解散队伍成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await TeamService.GetTeams();
+        await GetTeams();
+        await GetJoinedTeams();
+        StateHasChanged();
+    }
+
+
+    private async Task joinTeam(int teamId)
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        UserJoinTeam teaminfo = new UserJoinTeam
+            {
+                TeamId = teamId,
+                UserId = phone,
+                Time = DateTime.Now.ToString("yyyy-MM-dd"),
+            };
+        var response = await UserJoinTeamService.joinTeam(teaminfo);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "加入队伍成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+        await TeamService.GetTeams();
+        await GetTeams();
+        await GetJoinedTeams();
+        StateHasChanged();
+
+    }
 
     private Color GetTagClass(string tag)
     {
@@ -135,7 +343,7 @@
             {
                 DateTime tomorrow = DateTime.Today.AddDays(1);
 
-                if (deadline < tomorrow )
+                if (deadline < tomorrow)
                 {
                     return new ValidationResult("截止时间必须在未来");
                 }
@@ -149,9 +357,9 @@
         {
             Name = "",
             Description = "",
-            Tag= EnumTag.First,
-            Count= 0,
-            DeadLine=DateTime.Now,
+            Tag = EnumTag.First,
+            Count = 0,
+            DeadLine = DateTime.Now,
         };
 
     public enum EnumTag
@@ -235,6 +443,103 @@
         }
 
         await TeamService.GetTeams();
+        await GetTeams();
+        await GetLeadTeams(); 
+        StateHasChanged();
+    }
+
+    public async Task GetTeams()
+    {
+        teamInfoModels.Clear();
+        foreach (var team in TeamService.teams)
+        {
+            string UserId = await LocalStorage.GetItemAsStringAsync("phone");
+            UserId = UserId.Replace("\"", "");
+
+            if (team.LeaderId != UserId)
+            {
+                string phone = team.LeaderId;
+                phone = phone.Replace("\"", "");
+                User user = await UserService.GetUserByPhone(phone);
+
+                int count = await UserJoinTeamService.GetTeamCurrentCount(team.TeamId);
+
+                TeamInfoModel teamInfoModel = new TeamInfoModel
+                    {
+                        TeamId = team.TeamId,
+                        Name = team.Name,
+                        Description = team.Description,
+                        Tag = team.Tag,
+                        LeaderId = team.LeaderId,
+                        Count = team.Count,
+                        DeadLine = team.DeadLine,
+                        Avartar = user.Avartar,
+                        CurCount = count
+                    };
+                teamInfoModels.Add(teamInfoModel);
+            }
+        }
+
+    }
+
+    public async Task GetLeadTeams()
+    {
+        LeadTeams.Clear();
+        string UserId = await LocalStorage.GetItemAsStringAsync("phone");
+        UserId = UserId.Replace("\"", "");
+        List<Team> TeamsList = await TeamService.getTeamByLeaderId(UserId);
+
+        foreach (var team in TeamsList)
+        {
+            int count = await UserJoinTeamService.GetTeamCurrentCount(team.TeamId);
+
+            List<string> members = await UserJoinTeamService.getMember(team.TeamId);
+
+            MyTeamModel myTeamModel = new MyTeamModel
+                {
+                    TeamId = team.TeamId,
+                    Name = team.Name,
+                    Description = team.Description,
+                    Tag = team.Tag,
+                    Count = team.Count,
+                    DeadLine = team.DeadLine,
+                    CurCount = count,
+                    memberId = members
+                };
+            LeadTeams.Add(myTeamModel);
+
+        }
+
+    }
+
+    public async Task GetJoinedTeams()
+    {
+        JoinedTeams.Clear();
+        string UserId = await LocalStorage.GetItemAsStringAsync("phone");
+        UserId = UserId.Replace("\"", "");
+        List<Team> TeamsList = await UserJoinTeamService.getTeambyJoined(UserId);
+        foreach (var team in TeamsList)
+        {
+            string phone = team.LeaderId;
+            phone = phone.Replace("\"", "");
+            User user = await UserService.GetUserByPhone(phone);
+            int count = await UserJoinTeamService.GetTeamCurrentCount(team.TeamId);
+
+            TeamInfoModel teamInfoModel = new TeamInfoModel
+                {
+                    TeamId = team.TeamId,
+                    Name = team.Name,
+                    Description = team.Description,
+                    Tag = team.Tag,
+                    LeaderId = team.LeaderId,
+                    Count = team.Count,
+                    DeadLine = team.DeadLine,
+                    Avartar = user.Avartar,
+                    CurCount = count
+                };
+            JoinedTeams.Add(teamInfoModel);
+
+        }
         StateHasChanged();
     }
 }

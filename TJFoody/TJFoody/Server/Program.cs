@@ -10,6 +10,8 @@ using TJFoody.Server.Service.TeamService;
 using TJFoody.Server.Service.UserService;
 using TJFoody.Server.Service.PostService;
 using TJFoody.Server.Service.CommentService;
+using TJFoody.Server.Service.UserJoinTeamService;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +27,8 @@ builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
+builder.Services.AddScoped<IUserJoinTeamService, UserJoinTeamService>();
+
 
 builder.Services.AddSignalR();
 builder.Services.AddResponseCompression(opts =>

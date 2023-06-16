@@ -25,5 +25,11 @@ namespace TJFoody.Client.Services.TeamService
             var response = await _http.PostAsJsonAsync("Team/addTeam", team);
             return await response.Content.ReadFromJsonAsync<ServiceResponse<Team>>();
         }
+
+        async Task<List<Team>> ITeamService.getTeamByLeaderId(string userId)
+        {
+            var result = await _http.GetFromJsonAsync<ServiceResponse<List<Team>>>($"Team/getTeamByLeaderId/{userId}");
+            return result.Data;
+        }
     }
 }
