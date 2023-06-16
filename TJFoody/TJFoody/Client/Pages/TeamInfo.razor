@@ -223,6 +223,7 @@
 
         await TeamService.GetTeams();
         await GetTeams();
+        await GetLeadTeams();
         await GetJoinedTeams();
         StateHasChanged();
     }
@@ -240,6 +241,7 @@
         }
         await TeamService.GetTeams();
         await GetTeams();
+        await GetLeadTeams();
         await GetJoinedTeams();
         StateHasChanged();
     }
@@ -256,6 +258,7 @@
         }
         await TeamService.GetTeams();
         await GetTeams();
+        await GetLeadTeams();
         await GetJoinedTeams();
         StateHasChanged();
     }
@@ -283,6 +286,7 @@
 
         await TeamService.GetTeams();
         await GetTeams();
+        await GetLeadTeams();
         await GetJoinedTeams();
         StateHasChanged();
 
@@ -444,7 +448,8 @@
 
         await TeamService.GetTeams();
         await GetTeams();
-        await GetLeadTeams(); 
+        await GetLeadTeams();
+        await GetJoinedTeams();
         StateHasChanged();
     }
 
