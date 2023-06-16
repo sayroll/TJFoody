@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TJFoody.Client;
 using TJFoody.Client.Services.CuisineService;
-
+using TJFoody.Client.Services.PostService;
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -23,6 +23,7 @@ builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();
