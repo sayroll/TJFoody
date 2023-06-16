@@ -16,6 +16,50 @@ namespace TJFoody.Server.Service.UserJoinTeamService
             _teamService = teamService;
         }
 
+        async public Task<ServiceResponse<List<UserJoinTeam>>> DisbandTeam(int teamId)
+        {
+            ServiceResponse<List<UserJoinTeam>> response = new ServiceResponse<List<UserJoinTeam>>();
+
+            try
+            {
+                // Find the team in the Team table
+                Team teamToDelete = _context.Teams.FirstOrDefault(t => t.TeamId == teamId);
+
+                if (teamToDelete != null)
+                {
+                    // Find the UserJoinTeam entries matching the teamId
+                    List<UserJoinTeam> entriesToDelete = _context.UserJoinTeams
+                        .Where(entry => entry.TeamId == teamId)
+                        .ToList();
+
+                    // Remove the UserJoinTeam entries from the context
+                    _context.UserJoinTeams.RemoveRange(entriesToDelete);
+
+                    // Remove the team from the context
+                    _context.Teams.Remove(teamToDelete);
+
+                    // Save the changes to the database
+                    await _context.SaveChangesAsync();
+
+                    response.Data = entriesToDelete;
+                    response.Success = true;
+                    response.Message = "Team deleted successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Team not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error deleting team : " + ex.Message;
+            }
+
+            return response;
+        }
 
         async Task<ServiceResponse<EntityEntry<UserJoinTeam>>> IUserJoinTeamService.AddJoinTeamInfo(UserJoinTeam UserJoinTeam)
         {
@@ -55,6 +99,32 @@ namespace TJFoody.Server.Service.UserJoinTeamService
             response.Success = false;
             response.Message = "队伍已满";
             return response;
+        }
+
+        Task<ServiceResponse<List<string>>> IUserJoinTeamService.GetMember(int teamId)
+        {
+            ServiceResponse<List<string>> response = new ServiceResponse<List<string>>();
+
+            try
+            {
+                // Find the userIds that match the teamId in the UserJoinTeam table
+                List<string> userIds = _context.UserJoinTeams
+                    .Where(entry => entry.TeamId == teamId)
+                    .Select(entry => entry.UserId)
+                    .ToList();
+
+                response.Data = userIds;
+                response.Success = true;
+                response.Message = "Member userIds retrieved successfully.";
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error retrieving member userIds: " + ex.Message;
+            }
+
+            return Task.FromResult(response);
         }
 
         async Task<ServiceResponse<List<Team>>> IUserJoinTeamService.GetTeamByJoined(string userId)
@@ -102,6 +172,36 @@ namespace TJFoody.Server.Service.UserJoinTeamService
             {
                 response.Message = "An error occurred while retrieving the team count.";
                 // 设置其他错误处理逻辑，如记录日志等
+            }
+
+            return response;
+        }
+
+        async Task<ServiceResponse<List<UserJoinTeam>>> IUserJoinTeamService.QuitTeam(string userId, int teamId)
+        {
+            ServiceResponse<List<UserJoinTeam>> response = new ServiceResponse<List<UserJoinTeam>>();
+            try
+            {
+                // Find the UserJoinTeam entries matching the userId and teamId
+                List<UserJoinTeam> entriesToDelete = _context.UserJoinTeams
+                    .Where(entry => entry.UserId == userId && entry.TeamId == teamId)
+                    .ToList();
+
+                // Remove the entries from the context
+                _context.UserJoinTeams.RemoveRange(entriesToDelete);
+
+                // Save the changes to the database
+                await _context.SaveChangesAsync();
+
+                response.Data = entriesToDelete;
+                response.Success = true;
+                response.Message = "Deleted successfully.";
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error deleting: " + ex.Message;
             }
 
             return response;

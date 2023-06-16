@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System.Data;
 using TJFoody.Server.Service.UserJoinTeamService;
 
 namespace TJFoody.Server.Controllers
@@ -41,6 +43,34 @@ namespace TJFoody.Server.Controllers
             {
                 return Ok(response);
             }
+        }
+
+        [HttpGet("getMember/{teamId}")]
+        public async Task<ActionResult<ServiceResponse<List<string>>>> GetMember(int teamId)
+        {
+            var response = await _userJoinTeamService.GetMember(teamId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
+        [HttpDelete("QuitTeam/{userId}/{teamId}")]
+        public async Task<ActionResult<ServiceResponse<List<UserJoinTeam>>>> QuitTeam(string userId, int teamId)
+        {
+            var result = await _userJoinTeamService.QuitTeam(userId, teamId);
+            return Ok(result);
+        }
+
+        [HttpDelete("DisbandTeam/{teamId}")]
+        public async Task<ActionResult<ServiceResponse<List<UserJoinTeam>>>> DisbandTeam(int teamId)
+        {
+            var result = await _userJoinTeamService.DisbandTeam(teamId);
+            return Ok(result);
         }
     }
 

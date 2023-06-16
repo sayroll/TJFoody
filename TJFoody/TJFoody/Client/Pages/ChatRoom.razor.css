@@ -41,13 +41,13 @@
 .sent:after {
     border-left-color: #03a9f4;
     border-right: 0;
-    right: -20px;
+    right: -10px;
 }
 
 .received:after {
     border-right-color: #4CAF50;
     border-left: 0;
-    left: -20px;
+    left: -10px;
 }
 .user {
     font-size: 0.8em;
