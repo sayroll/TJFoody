@@ -13,6 +13,13 @@
 
         Task<List<CuisineReview>> getAllCuisineReviews();
 
+        Task<List<SellerReview>> getSellerReviewsByUserId(string userId);
+
+        Task<List<CuisineReview>> getCuisineReviewsByUserId(string userId);
+        Task<ServiceResponse<SellerReview>> DeleteSellerReview(int Id);
+
+        Task<ServiceResponse<CuisineReview>> DeleteCuisineReview(int Id);
+
         Task getReviews();
 
         double calculateSellerRate(int sellerID);

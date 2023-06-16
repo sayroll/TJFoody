@@ -60,5 +60,61 @@ namespace TJFoody.Server.Controllers
             }
         }
 
+        [HttpGet("getSellerReviewUser/{userId}")]
+        public async Task<ActionResult<ServiceResponse<List<SellerReview>>>> getSellerReviewUser(string userId)
+        {
+            var response = await _reviewService.GetSellerReviewByUserId(userId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
+        [HttpGet("getCuisineReviewUser/{userId}")]
+        public async Task<ActionResult<ServiceResponse<List<SellerReview>>>> getCuisineReviewUser(string userId)
+        {
+            var response = await _reviewService.GetCuisineReviewByUserId(userId);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
+        [HttpGet("deleteCuisineReview/{Id}")]
+        public async Task<ActionResult<ServiceResponse<CuisineReview>>> DeleteCuisineReview(int Id)
+        {
+            var response = await _reviewService.DeleteCuisineReview(Id);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
+        [HttpGet("deleteSellerReview/{Id}")]
+        public async Task<ActionResult<ServiceResponse<SellerReview>>> DeleteSellerReview(int Id)
+        {
+            var response = await _reviewService.DeleteSellerReview(Id);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
     }
 }

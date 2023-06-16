@@ -14,5 +14,13 @@ namespace TJFoody.Server.Service.ReviewService
 
         Task<ServiceResponse<SellerReview>> getSellerReviewByID(int id);
         Task<ServiceResponse<CuisineReview>> getCuisineReviewByID(int id);
+
+        Task<ServiceResponse<List<SellerReview>>> GetSellerReviewByUserId(string userId);
+        Task<ServiceResponse<List<CuisineReview>>> GetCuisineReviewByUserId(string userId);
+
+        Task<ServiceResponse<SellerReview>> DeleteSellerReview(int id);
+        Task<ServiceResponse<CuisineReview>> DeleteCuisineReview(int id);
+
+
     }
 }

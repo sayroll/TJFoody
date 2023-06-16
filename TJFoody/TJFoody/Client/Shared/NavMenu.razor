@@ -10,6 +10,11 @@
 <div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
     <nav class="flex-column">
         <div class="nav-item px-3">
+            <NavLink class="nav-link" href="personal" Match="NavLinkMatch.All">
+                &nbsp;&nbsp;&nbsp;&nbsp;<span class="fas fa-address-book" aria-hidden="true" style="padding-right:15px"></span> 个人主页
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
             <NavLink class="nav-link" href="main" Match="NavLinkMatch.All">
                 &nbsp;&nbsp;&nbsp;&nbsp;<span class="fa-solid fa-bowl-food" aria-hidden="true" style="padding-right:15px"></span> 美食交流
             </NavLink>

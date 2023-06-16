@@ -129,6 +129,43 @@ namespace TJFoody.Server.Service.UserService
             return jwt;
         }
 
+        async Task<ServiceResponse<User>> IUserService.ModifyUserInfo(User user)
+        {
+            ServiceResponse<User> response = new ServiceResponse<User>();
 
+            try
+            {
+                // Find the user in the Users table based on the phone number
+                User userToUpdate = _infoContext.Users.FirstOrDefault(u => u.Phone == user.Phone);
+
+                if (userToUpdate != null)
+                {
+                    // Update the user information
+                    userToUpdate.Name = user.Name;
+                    userToUpdate.Avartar = user.Avartar;
+                    userToUpdate.Password = user.Password;
+
+                    // Save the changes to the database
+                    await _infoContext.SaveChangesAsync();
+
+                    response.Data = userToUpdate;
+                    response.Success = true;
+                    response.Message = "User information updated successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "User not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error updating user information: " + ex.Message;
+            }
+
+            return response;
+        }
     }
 }

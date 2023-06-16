@@ -114,5 +114,33 @@ namespace TJFoody.Client.Services.ReviewService
             }
             return result;
         }
+
+        async Task<List<SellerReview>> IReviewService.getSellerReviewsByUserId(string userId)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<SellerReview>>>($"Review/getSellerReviewUser/{userId}");
+
+            return response.Data;
+        }
+
+        async Task<List<CuisineReview>> IReviewService.getCuisineReviewsByUserId(string userId)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<CuisineReview>>>($"Review/getCuisineReviewUser/{userId}");
+
+            return response.Data;
+        }
+
+        async Task<ServiceResponse<SellerReview>> IReviewService.DeleteSellerReview(int Id)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<SellerReview>>($"Review/deleteSellerReview/{Id}");
+
+            return response;
+        }
+
+        async Task<ServiceResponse<CuisineReview>> IReviewService.DeleteCuisineReview(int Id)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<CuisineReview>>($"Review/deleteCuisineReview/{Id}");
+
+            return response;
+        }
     }
 }

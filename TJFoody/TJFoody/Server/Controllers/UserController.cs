@@ -49,6 +49,21 @@ namespace TJFoody.Server.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("modify")]
+        public async Task<ActionResult<ServiceResponse<User>>> ModifyUserInfo(User user)
+        {
+            var response = await _userService.ModifyUserInfo(user);
+            if (!response.Success)
+            {
+                return BadRequest(response);
+            }
+            else
+            {
+                return Ok(response);
+            }
+        }
+
         [HttpGet("getByPhone/{phone}")]
         public async Task<ActionResult<ServiceResponse<User>>> getUserByPhone(string phone)
         {

@@ -1,0 +1,335 @@
+﻿@page "/personal"
+@using System.ComponentModel.DataAnnotations;
+@using System.Diagnostics.CodeAnalysis;
+@layout MainLayout
+@inject ILocalStorageService LocalStorage
+@inject IUserService UserService
+@inject IReviewService ReviewService
+@inject ISellerService SellerService
+@inject ICuisineService CuisineService
+@inject MessageService MessageService
+
+
+
+<PageTitle>个人主页</PageTitle>
+@if (user != null)
+{
+    <div style="padding-bottom:20px">
+        <Card>
+            <BodyTemplate>
+                <div style="float:left;width:6%">
+                    <img class="img-fluid" style="object-fit: cover;" src="@user.Avartar" />
+                </div>
+                <div style="float:left;padding-left:20px;width:80%">
+                    <h5 style="font-weight:bold;color:#7F82BB">@user.Name</h5>
+                    <h5 style="font-weight:bold;color:#7F82BB">@user.Phone</h5>
+                    <Button Text="修改个人信息" Color="Color.Primary" OnClickWithoutRender="@ShowInfoDialog" />
+                    <Button Text="修改密码" Color="Color.Primary" OnClickWithoutRender="@ShowChangePWDialog" />
+                </div>
+            </BodyTemplate>
+        </Card>
+    </div>
+}
+<Tab IsCard="true" IsBorderCard="true">
+    <TabItem Text="我的商家评价">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>商家名称</th>
+                    <th>评价内容</th>
+                    <th>评分</th>
+                    <th>日期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var seller in mySellerReview)
+                {
+                    <tr>
+                        <td>@seller.Name</td>
+                        <td>@seller.Content</td>
+                        <td><Rate Value="@seller.Rate" IsReadonly="true" ShowValue="true" /></td>
+                        <td>@seller.Date</td>
+                        <td><Button Text="删除评价" Color="Color.Danger" @onclick="() => DeleteSellerReview(seller.Id)" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </TabItem>
+    <TabItem Text="我的菜品评价">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>菜品名称</th>
+                    <th>评价内容</th>
+                    <th>评分</th>
+                    <th>日期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var cuisine in myCuisineReview)
+                {
+                    <tr>
+                        <td>@cuisine.Name</td>
+                        <td>@cuisine.Content</td>
+                        <td><Rate Value="@cuisine.Rate" IsReadonly="true" ShowValue="true" /></td>
+                        <td>@cuisine.Date</td>
+                        <td><Button Text="删除评价" Color="Color.Danger" @onclick="() => DeleteCuisineReview(cuisine.Id)" /></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </TabItem>
+</Tab>
+
+@code {
+    private User user = new User();
+    private List<MyReviewModel> mySellerReview = new List<MyReviewModel>();
+    private List<MyReviewModel> myCuisineReview = new List<MyReviewModel>();
+
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    class MyReviewModel
+    {
+        public int Id { get; set; }
+        public string? Content { get; set; }
+        public string? Date { get; set; }
+        public double Rate { get; set; }
+        public string? Name { get; set; }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUserInfo();
+        await GetSellerReview();
+        await GetCuisineReview();
+        StateHasChanged();
+    }
+    
+    private async Task DeleteCuisineReview(int Id)
+    {
+        var response = await ReviewService.DeleteCuisineReview(Id);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "删除评价成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await GetCuisineReview();
+        StateHasChanged();
+    }
+    private async Task DeleteSellerReview(int Id)
+    {
+        var response = await ReviewService.DeleteSellerReview(Id);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "删除评价成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await GetSellerReview();
+        StateHasChanged();
+    }
+
+    private async Task GetSellerReview()
+    {
+        mySellerReview.Clear();
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        List<SellerReview> sellerRevies = await ReviewService.getSellerReviewsByUserId(phone);
+
+        foreach (var sellerReview in sellerRevies)
+        {
+            Seller seller = SellerService.sellers.Find(p => p.Id == sellerReview.SellerId);
+            MyReviewModel sellerReviewModel = new MyReviewModel
+                {
+                    Id = sellerReview.Id,
+                    Content = sellerReview.Content,
+                    Date = sellerReview.Date,
+                    Rate = (double)sellerReview.Rate,
+                    Name = seller.Name
+                };
+            mySellerReview.Add(sellerReviewModel);
+
+        }
+    }
+
+    private async Task GetCuisineReview()
+    {
+        myCuisineReview.Clear();
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        List<CuisineReview> cuisineReviews = await ReviewService.getCuisineReviewsByUserId(phone);
+
+        foreach (var cuisineReview in cuisineReviews)
+        {
+            int Id = (int)cuisineReview.CuisineId;
+            Cuisine cuisine = await CuisineService.GetCuisineById(Id);
+            MyReviewModel cuisineReviewModel = new MyReviewModel
+                {
+                    Id = cuisineReview.Id,
+                    Content = cuisineReview.Content,
+                    Date = cuisineReview.Date,
+                    Rate = (double)cuisineReview.Rate,
+                    Name = cuisine.Name
+                };
+            myCuisineReview.Add(cuisineReviewModel);
+
+        }
+    }
+
+    private async Task GetUserInfo()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        user = await UserService.GetUserByPhone(phone);
+        info.name = user.Name;
+        info.avartar = user.Avartar;
+    }
+
+    public class Information
+    {
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "昵称")]
+        public string? name { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
+        [Display(Name = "头像链接")]
+        public string? avartar { get; set; }
+    }
+
+    public class ChangePW
+    {
+        [NotNull]
+        [Required(ErrorMessage = "请输入新密码")]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [DataType(DataType.Password)]
+        [Display(Name = "新密码")]
+        public string? Password { get; set; }
+
+        [Required(ErrorMessage = "请确认新密码")]
+        [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
+        [Compare(nameof(Password))]
+        [DataType(DataType.Password)]
+        [Display(Name = "确认新密码")]
+        public string? ConfirmPassword { get; set; }
+    }
+
+    private ChangePW changeInfo = new ChangePW
+        {
+            Password = null,
+            ConfirmPassword = null
+        };
+
+    private Information info = new Information
+        {
+            name = null,
+            avartar = null
+        };
+
+    private async Task ShowInfoDialog()
+    {
+        var items = Utility.GenerateEditorItems<Information>();
+        var item = items.First(i => i.GetFieldName() == nameof(Information.name));
+        var option = new EditDialogOption<Information>()
+            {
+                Title = "个人信息修改",
+                Model = info,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    submitInfo();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "提交"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task ShowChangePWDialog()
+    {
+        var items = Utility.GenerateEditorItems<ChangePW>();
+        var item = items.First(i => i.GetFieldName() == nameof(ChangePW.Password));
+        var option = new EditDialogOption<ChangePW>()
+            {
+                Title = "密码修改",
+                Model = changeInfo,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    submitPassword();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "提交"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task submitInfo()
+    {
+        User userNew = new User
+            {
+                Name = info.name,
+                Password = user.Password,
+                Avartar = info.avartar,
+                Phone = user.Phone
+            };
+        var response = await UserService.ModifyUserInfo(userNew);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "修改个人信息成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await GetUserInfo();
+        StateHasChanged();
+    }
+    private async Task submitPassword()
+    {
+        User userNew = new User
+            {
+                Name = user.Name,
+                Password = changeInfo.Password,
+                Avartar = user.Avartar,
+                Phone = user.Phone
+            };
+        var response = await UserService.ModifyUserInfo(userNew);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "修改密码成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        changeInfo.Password = null;
+        changeInfo.ConfirmPassword = null;
+        await GetUserInfo();
+        StateHasChanged();
+    }
+}

@@ -10,5 +10,7 @@
 
         Task<ServiceResponse<User>> GetUserByPhone(string phone);
 
+        Task<ServiceResponse<User>> ModifyUserInfo(User user);
+
     }
 }

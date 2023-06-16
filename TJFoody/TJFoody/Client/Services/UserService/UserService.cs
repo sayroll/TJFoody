@@ -32,5 +32,11 @@ namespace TJFoody.Client.Services.UserService
 
             return await result.Content.ReadFromJsonAsync<ServiceResponse<User>>();
         }
+
+        async Task<ServiceResponse<User>> IUserService.ModifyUserInfo(User user)
+        {
+            var result = await _http.PostAsJsonAsync("User/modify", user);
+            return await result.Content.ReadFromJsonAsync<ServiceResponse<User>>();
+        }
     }
 }
