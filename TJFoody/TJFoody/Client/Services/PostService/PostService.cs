@@ -7,7 +7,7 @@
         {
             _http = http;
         }
-        public List<Post> Posts { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public List<Post> Posts { get; set; } = new List<Post>();
 
         public async Task<ServiceResponse<int>> addPost(Post post)
         {
@@ -28,6 +28,19 @@
             if(response !=null && response.Data!=null)
             {
                 Posts = response.Data;
+            }
+        }
+
+        public async Task<Post> getPostById(int id)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<Post>>($"Post/get/{id}");
+            if(response.Success)
+            {
+                return response.Data;
+            }
+            else
+            {
+                return null;
             }
         }
     }

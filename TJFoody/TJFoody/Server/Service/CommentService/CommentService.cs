@@ -10,7 +10,7 @@ namespace TJFoody.Server.Service.CommentService
         {
             _infoContext = infoContext;
         }
-        public async Task<ServiceResponse<int>> AddComment(int postid, string phone, string content, int replyId)
+        public async Task<ServiceResponse<int>> AddComment(int postid, string phone, string content, int? replyId)
         {
             var response = new ServiceResponse<int>();
 
@@ -19,18 +19,19 @@ namespace TJFoody.Server.Service.CommentService
                 PostId = postid,
                 Phone = phone,
                 Content = content,
-                Time = DateTime.Now.ToString()
+                Time = DateTime.Now.ToString(),
+                ReplyId = replyId
             };
-            if(replyId.Equals("-1"))
+            try
             {
-                response.Message = "这是一个回复帖子的评论";
+                await _infoContext.Comments.AddAsync(comment);
+                await _infoContext.SaveChangesAsync();
             }
-            else
+            catch(Exception ex)
             {
-                comment.ReplyId = replyId;
+                response.Success = false;
+                response.Message = ex.Message;
             }
-            await _infoContext.Comments.AddAsync(comment);
-            await _infoContext.SaveChangesAsync();
             return response;
         }
 

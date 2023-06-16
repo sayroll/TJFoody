@@ -1,7 +1,145 @@
 ﻿@page "/forum"
+@using System.ComponentModel.DataAnnotations;
+@using System.Diagnostics.CodeAnalysis;
 @layout MainLayout
-<h3>Forum</h3>
+@inject IPostService PostService
+@inject NavigationManager Navigation
+@inject MessageService MessageService
+@inject ILocalStorageService LocalStorage
+<div>
+    <div>
+        <img style="width: 50px; height: 50px;" src="https://img1.baidu.com/it/u=1772658647,3167658821&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=507" />
+        <div style="font-weight: bold;font-size: 50px;">
+            实习论坛
+        </div>
+    </div>
+    <Button Size="Size.ExtraLarge" style="display: block; margin: 0 auto;" OnClick="ShowEditedDialog">发帖</Button>
+</div>
+@if(PostService.Posts.Count == 0 || PostService.Posts == null)
+{
+    <span>
+        加载中...
+    </span>
+}
+else
+{
+    <Row ItemsPerRow="ItemsPerRow.One">
+        @foreach(var post in PostService.Posts)
+        {
+            <Card>
+                <BodyTemplate>
+                    <div style="font-weight: bold;font-size: 30px;">@post.Postname</div>
+                    <div style="text-indent: 2em;font-size: 20px;">@post.Content</div>
+                    <Button  style="float:right;" OnClick="(()=> deletePost(post.Id))">删除</Button>
+                    <div style="float:right;">
+                        <Button style="float:right;margin-right:20px" OnClick="(()=> JumpDetail(post.Id))">详情</Button>
+                    </div>
+                    <div style="float:right;">
+                        <h5 style="color:grey;font-size:15px;">@post.Time</h5>
+                    </div>
+                </BodyTemplate>
+            </Card>
+        }
+    </Row>
+}
 
 @code {
 
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    public class forumContent
+    {
+
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "帖子名称")]
+        public string? title { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
+        [Display(Name = "内容")]
+        public string? text { get; set; }
+    }
+
+    public forumContent model = new forumContent
+        {
+            title = string.Empty,
+            text = string.Empty
+        };
+
+    private async Task ShowEditedDialog()
+    {
+        var items = Utility.GenerateEditorItems<forumContent>();
+        var option = new EditDialogOption<forumContent>()
+            {
+                Title = "发布帖子",
+                Model = model,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    addPost();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "发布"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await PostService.getAllPosts();
+    }
+
+    private Task JumpDetail(int id)
+    {
+        Navigation.NavigateTo("/forum/" + id);
+        return Task.CompletedTask;
+    }
+
+    private async Task addPost()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        Post post = new Post
+            {
+                Phone = phone,
+                Postname = model.title,
+                Content = model.text,
+                Time = DateTime.Now.ToString()
+            };
+        var response = await PostService.addPost(post);
+        if(response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "发布帖子成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await PostService.getAllPosts();
+        StateHasChanged();
+    }
+
+    private async Task deletePost(int id )
+    {
+        var response = await PostService.deletePost(id);
+        if(response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "删除帖子成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await PostService.getAllPosts();
+        StateHasChanged();
+    }
 }

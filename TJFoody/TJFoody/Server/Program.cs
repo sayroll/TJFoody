@@ -12,7 +12,6 @@ using TJFoody.Server.Service.PostService;
 using TJFoody.Server.Service.CommentService;
 using TJFoody.Server.Service.UserJoinTeamService;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -25,10 +24,9 @@ builder.Services.AddScoped<IUserService,UserService>();
 builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
+builder.Services.AddScoped<IUserJoinTeamService, UserJoinTeamService>();
 builder.Services.AddScoped<IPostService, PostService>();
 builder.Services.AddScoped<ICommentService, CommentService>();
-builder.Services.AddScoped<IUserJoinTeamService, UserJoinTeamService>();
-
 
 builder.Services.AddSignalR();
 builder.Services.AddResponseCompression(opts =>

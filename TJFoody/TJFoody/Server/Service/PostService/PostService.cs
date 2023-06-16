@@ -64,5 +64,21 @@ namespace TJFoody.Server.Service.PostService
 
             return response;
         }
+
+        public async Task<ServiceResponse<Post>> getPost(int id )
+        {
+            var response = new ServiceResponse<Post>();
+            Post post = _context.Posts.FirstOrDefault( p => p.Id == id);
+            if( post != null )
+            {
+                response.Data = post;
+            }
+            else
+            {
+                response.Success = false;
+                response.Message = "不存在id对应的帖子";
+            }
+            return response;
+        }
     }
 }

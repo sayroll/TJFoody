@@ -7,5 +7,7 @@
         Task<ServiceResponse<int>> addPost(Post post);
 
         Task<ServiceResponse<int>> deletePost(int id);
+
+        Task<Post> getPostById(int id);
     }
 }

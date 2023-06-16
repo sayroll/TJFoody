@@ -2,7 +2,7 @@
 {
     public interface ICommentService
     {
-        Task<ServiceResponse<int>> AddComment(int postid, string phone, string content,int replyId);
+        Task<ServiceResponse<int>> AddComment(int postid, string phone, string content,int? replyId);
 
         Task<ServiceResponse<List<Comment>>> GetCommentByPost(int postid);
 

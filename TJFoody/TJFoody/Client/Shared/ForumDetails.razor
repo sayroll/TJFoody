@@ -1,0 +1,184 @@
+﻿@page "/forum/{id:int}"
+@using System.Diagnostics.CodeAnalysis;
+@using System.ComponentModel.DataAnnotations;
+@layout MainLayout
+@inject NavigationManager Navigation
+@inject ILocalStorageService LocalStorage
+@inject MessageService MessageService
+@inject IPostService PostService
+@inject ICommentService CommentService
+@inject ILocalStorageService LocalStorage
+@inject IUserService UserService
+
+@if(post ==null || poster == null)
+{
+    <span>
+        加载中或该帖子已不存在
+    </span>
+}
+else
+{
+    <Card>
+        <BodyTemplate>
+            <div style="float:left;width:6%">
+                <img class="img-fluid" style="object-fit: cover;" src="@poster.Avartar" />
+            </div>
+            <div style="float:left;padding-left:20px;width:80%">
+                <h5 style="font-weight:bold;color:#7F82BB">@poster.Name</h5>
+                <p style="color:grey;font-size:15px;padding-top:10px">@post.Content</p>
+            </div>
+            <div style="float:right;">
+                <h5 style="color:grey;font-size:15px;">@post.Time</h5>
+            </div>
+        </BodyTemplate>
+    </Card>
+    <div>
+        <span style="display: block; margin: 0 auto;color:grey;font-size:15px;">帖子内容</span>
+    </div>
+    
+
+    @foreach(var model in models)
+    {
+        <Card>
+            <BodyTemplate>
+                <div style="float:left;width:6%">
+                    <img class="img-fluid" style="object-fit: cover;" src="@model.usr.Avartar" />
+                </div>
+                <div style="float:left;padding-left:20px;width:80%">
+                    <h5 style="font-weight:bold;color:#7F82BB">@model.usr.Name</h5>
+                    <p style="color:grey;font-size:15px;padding-top:10px">@model.cmt.Content</p>
+                </div>
+                <div style="float:right;">
+                    <h5 style="color:grey;font-size:15px;">@model.cmt.Time</h5>
+                </div>
+            </BodyTemplate>
+        </Card>
+    }
+    <Button OnClick="ShowEditedDialog">回复帖子</Button>
+    <Button OnClick="delete">删除</Button>
+}
+
+
+
+@code {
+
+    public async Task delete()
+    {
+        await CommentService.deleteComment(1);
+        await getinfo();
+        StateHasChanged();
+    }
+
+    public class commentContent
+    {
+        [Required]
+        [AutoGenerateColumn(Order = 10, Filterable = true, Searchable = true)]
+        [Display(Name = "评论内容")]
+        public string? text { get; set; }
+    }
+
+
+    private Post post = null;
+    private User poster = null;
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    [Parameter]
+    public int Id { get; set; }
+
+    private List<Comment> comments { get; set; } = new List<Comment>();
+    private List<User> posters { get; set; } = new List<User>();
+    private List<commentModel> models { get; set; } = new List<commentModel>();
+
+    public async Task getinfo()
+    {
+        comments = await CommentService.getCommentByPost(Id);
+        posters.Clear();
+        foreach (var comment in comments)
+        {
+            string iphone = comment.Phone;
+            User tmp = await UserService.GetUserByPhone(iphone);
+            posters.Add(tmp);
+        }
+        models.Clear();
+        for (int i = 0; i < comments.Count(); i++)
+        {
+            commentModel tmp = new commentModel
+                {
+                    cmt = comments[i],
+                    usr = posters[i]
+                };
+            models.Add(tmp);
+        }
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        post = await PostService.getPostById(Id);
+        string phone = post.Phone;
+        poster = await UserService.GetUserByPhone(phone.Replace("\"", ""));
+        await getinfo();
+
+    }
+
+    public commentContent model = new commentContent
+        {
+            text = string.Empty
+        };
+
+    private async Task ShowEditedDialog()
+    {
+        var items = Utility.GenerateEditorItems<commentContent>();
+        var option = new EditDialogOption<commentContent>()
+            {
+                Title = "回复帖子",
+                Model = model,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    addComment();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "回复"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task addComment()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        Comment comment = new Comment
+            {
+                PostId = Id,
+                Phone = phone,
+                Content = model.text,
+                Time = DateTime.Now.ToString(),
+                ReplyId = -1
+            };
+        var response = await CommentService.addComment(comment);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "回复帖子成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await getinfo();
+        StateHasChanged();
+    }
+
+    private class commentModel
+    {
+        public Comment cmt{ get; set; }
+        public User usr{ get; set; }
+    }
+}

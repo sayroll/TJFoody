@@ -9,6 +9,8 @@ global using TJFoody.Client.Services.TeamService;
 global using TJFoody.Client.Services.CuisineService;
 global using TJFoody.Client.Services.UserJoinTeamService;
 global using TJFoody.Client.Services.PostService;
+global using TJFoody.Client.Services.CommentService;
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TJFoody.Client;
@@ -25,8 +27,9 @@ builder.Services.AddScoped<ICuisineService, CuisineService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
-builder.Services.AddScoped<IUserJoinTeamService,UserJoinTeamService>();
 builder.Services.AddScoped<IPostService, PostService>();
+builder.Services.AddScoped<IUserJoinTeamService,UserJoinTeamService>();
+builder.Services.AddScoped<ICommentService,CommentService>();
 
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();

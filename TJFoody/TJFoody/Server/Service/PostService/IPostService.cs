@@ -5,5 +5,6 @@
         Task<ServiceResponse<List<Post>>> GetAllPosts();
         Task<ServiceResponse<int>> AddPost(Post post);
         Task<ServiceResponse<int>> DeletePost(int id);
+        Task<ServiceResponse<Post>> getPost(int id);
     }
 }

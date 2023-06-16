@@ -47,5 +47,20 @@ namespace TJFoody.Server.Controllers
             var res = await _postService.GetAllPosts();
             return Ok(res);
         }
+
+        [HttpGet]
+        [Route("get/{id}")]
+        public async Task<ActionResult<ServiceResponse<Post>>> getPost(int id)
+        {
+            var res = await _postService.getPost(id);
+            if(res.Success)
+            {
+                return Ok(res);
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
     }
 }
