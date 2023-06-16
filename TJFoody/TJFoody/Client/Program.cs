@@ -8,10 +8,11 @@ global using Blazored.LocalStorage;
 global using TJFoody.Client.Services.TeamService;
 global using TJFoody.Client.Services.CuisineService;
 global using TJFoody.Client.Services.UserJoinTeamService;
-
+global using TJFoody.Client.Services.PostService;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TJFoody.Client;
+
 
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
@@ -25,6 +26,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 builder.Services.AddScoped<ITeamService, TeamService>();
 builder.Services.AddScoped<IUserJoinTeamService,UserJoinTeamService>();
+builder.Services.AddScoped<IPostService, PostService>();
 
 builder.Services.AddOptions();
 builder.Services.AddAuthorizationCore();

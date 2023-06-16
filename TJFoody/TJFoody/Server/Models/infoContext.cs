@@ -16,8 +16,10 @@ namespace TJFoody.Server.Models
         {
         }
 
+        public virtual DbSet<Comment> Comments { get; set; } = null!;
         public virtual DbSet<Cuisine> Cuisines { get; set; } = null!;
         public virtual DbSet<CuisineReview> CuisineReviews { get; set; } = null!;
+        public virtual DbSet<Post> Posts { get; set; } = null!;
         public virtual DbSet<Seller> Sellers { get; set; } = null!;
         public virtual DbSet<SellerReview> SellerReviews { get; set; } = null!;
         public virtual DbSet<Team> Teams { get; set; } = null!;
@@ -37,6 +39,42 @@ namespace TJFoody.Server.Models
         {
             modelBuilder.UseCollation("utf8_general_ci")
                 .HasCharSet("utf8");
+
+            modelBuilder.Entity<Comment>(entity =>
+            {
+                entity.ToTable("comments");
+
+                entity.HasIndex(e => e.PostId, "post_id");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Content)
+                    .HasMaxLength(255)
+                    .HasColumnName("content");
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(255)
+                    .HasColumnName("phone");
+
+                entity.Property(e => e.PostId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("post_id");
+
+                entity.Property(e => e.ReplyId)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("reply_id");
+
+                entity.Property(e => e.Time)
+                    .HasMaxLength(255)
+                    .HasColumnName("time");
+
+                entity.HasOne(d => d.Post)
+                    .WithMany(p => p.Comments)
+                    .HasForeignKey(d => d.PostId)
+                    .HasConstraintName("comments_ibfk_1");
+            });
 
             modelBuilder.Entity<Cuisine>(entity =>
             {
@@ -90,6 +128,31 @@ namespace TJFoody.Server.Models
                 entity.Property(e => e.UserId)
                     .HasMaxLength(11)
                     .HasColumnName("user_ID");
+            });
+
+            modelBuilder.Entity<Post>(entity =>
+            {
+                entity.ToTable("posts");
+
+                entity.Property(e => e.Id)
+                    .HasColumnType("int(11)")
+                    .HasColumnName("id");
+
+                entity.Property(e => e.Content)
+                    .HasMaxLength(255)
+                    .HasColumnName("content");
+
+                entity.Property(e => e.Phone)
+                    .HasMaxLength(255)
+                    .HasColumnName("phone");
+
+                entity.Property(e => e.Postname)
+                    .HasMaxLength(255)
+                    .HasColumnName("postname");
+
+                entity.Property(e => e.Time)
+                    .HasMaxLength(255)
+                    .HasColumnName("time");
             });
 
             modelBuilder.Entity<Seller>(entity =>
