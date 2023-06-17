@@ -11,5 +11,6 @@ namespace TJFoody.Server.Service.SellerService
 
         Task<ServiceResponse<Seller>> GetSellerByID(int id);
 
+        Task<ServiceResponse<Seller>> ModifySeller(Seller seller);
     }
 }

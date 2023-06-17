@@ -1,4 +1,6 @@
-﻿namespace TJFoody.Client.Services.SellerService
+﻿using TJFoody.Shared;
+
+namespace TJFoody.Client.Services.SellerService
 {
     public class SellerService : ISellerService
     {
@@ -15,6 +17,18 @@
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<Seller>>>("Seller/get");
             if (result != null && result.Data != null)
                 sellers = result.Data;
+        }
+
+        async Task<ServiceResponse<Seller>> ISellerService.addSeller(Seller seller)
+        {
+            var response = await _http.PostAsJsonAsync("Seller/add", seller);
+            return await response.Content.ReadFromJsonAsync<ServiceResponse<Seller>>();
+        }
+
+        async Task<ServiceResponse<Seller>> ISellerService.modifySeller(Seller seller)
+        {
+            var response = await _http.PostAsJsonAsync("Seller/modify", seller);
+            return await response.Content.ReadFromJsonAsync<ServiceResponse<Seller>>();
         }
     }
 }

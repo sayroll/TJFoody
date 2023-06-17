@@ -1,0 +1,204 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using System.Diagnostics.CodeAnalysis;
+@inject ICuisineService CuisineService
+@inject MessageService MessageService
+
+<PageTitle>菜品管理</PageTitle>
+
+<div style="padding-bottom:20px">
+    <Button Text="添加菜品" Color="Color.Primary" OnClickWithoutRender="@ShowAddDialog" />
+</div>
+<Card>
+    <BodyTemplate>
+        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>菜品编号</th>
+                        <th>菜品名称</th>
+                        <th>商家编号</th>
+                        <th>菜品简介</th>
+                        <th>图片预览</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cuisine in CuisineService.cuisine)
+                    {
+                        <tr>
+                            <td>@cuisine.Id</td>
+                            <td>@cuisine.Name</td>
+                            <td>@cuisine.SellerId</td>
+                            <td>@cuisine.Description</td>
+                            <td><img src="@cuisine.ImageUrl" style="width:100px;object-fit: cover;" class="img-fluid" /></td>
+                            <td>
+                                <Button Text="修改信息" Color="Color.Primary" @onclick="() => ModifyCuisine(cuisine.Id)" />
+
+                                <Button Text="删除菜品" Color="Color.Danger" @onclick="() => DeleteCuisine(cuisine.Id)" />
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </BodyTemplate>
+</Card>
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await CuisineService.GetCuisines();
+    }
+
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    public class AddCuisineContent
+    {
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "菜品名称")]
+        public string? Name { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 2, Filterable = true, Searchable = true)]
+        [Display(Name = "商家编号")]
+        public int? SellerId { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 3, Filterable = true, Searchable = true)]
+        [Display(Name = "菜品简介")]
+        public string? Description { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 4, Filterable = true, Searchable = true)]
+        [Display(Name = "图片链接")]
+        public string? ImageUrl { get; set; }
+    }
+
+    private AddCuisineContent Addmodel = new AddCuisineContent
+        {
+            Name = "",
+            SellerId = null,
+            ImageUrl = "",
+            Description = ""
+        };
+    private AddCuisineContent modify = new AddCuisineContent
+        {
+            Name = "",
+            SellerId = null,
+            ImageUrl = "",
+            Description = ""
+        };
+
+    private async Task ShowAddDialog()
+    {
+        var items = Utility.GenerateEditorItems<AddCuisineContent>();
+        //var item = items.First(i => i.GetFieldName() == nameof(AddTeamContent.rate));
+        var option = new EditDialogOption<AddCuisineContent>()
+            {
+                Title = "添加菜品信息",
+                Model = Addmodel,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    addCuisine();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "发布"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task addCuisine()
+    {
+        Cuisine cuisine = new Cuisine
+            {
+                Name = Addmodel.Name,
+                SellerId = Addmodel.SellerId,
+                ImageUrl = Addmodel.ImageUrl,
+                Description = Addmodel.Description
+            };
+        var response = await CuisineService.AddCuisine(cuisine);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "添加菜品信息成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+        await CuisineService.GetCuisines();
+        StateHasChanged();
+    }
+
+    private async Task ModifyCuisine(int Id)
+    {
+
+        var items = Utility.GenerateEditorItems<AddCuisineContent>();
+            //var item = items.First(i => i.GetFieldName() == nameof(AddTeamContent.rate));
+            Cuisine cuisine = CuisineService.cuisine.Find(p => p.Id == Id);
+        modify.Name = cuisine.Name;
+        modify.SellerId = cuisine.SellerId;
+        modify.ImageUrl = cuisine.ImageUrl;
+        modify.Description = cuisine.Description;
+        var option = new EditDialogOption<AddCuisineContent>()
+                {
+                    Title = "修改菜品信息",
+                    Model = modify,
+                    Items = items,
+                    ItemsPerRow = 1,
+                    RowType = RowType.Inline,
+                    OnCloseAsync = () =>
+                    {
+                        return Task.CompletedTask;
+                    },
+                    OnEditAsync = context =>
+                    {
+                        SubmitModify(Id);
+                        return Task.FromResult(true);
+                    },
+                    SaveButtonText = "发布"
+                };
+            await DialogService.ShowEditDialog(option);
+        
+    }
+
+    private async Task SubmitModify(int Id)
+    {
+        Cuisine cuisine = new Cuisine
+            {
+                Id = Id,
+                Name = modify.Name,
+                SellerId = modify.SellerId,
+                ImageUrl = modify.ImageUrl,
+                Description = modify.Description
+            };
+
+        var response = await CuisineService.ModifyCuisine(cuisine);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "修改菜品信息成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await CuisineService.GetCuisines();
+        StateHasChanged();
+    }
+
+    private async Task DeleteCuisine(int Id)
+    {
+
+    }
+}

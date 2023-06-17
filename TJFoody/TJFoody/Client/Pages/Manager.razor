@@ -1,0 +1,100 @@
+﻿@page "/manager"
+@using System.Diagnostics.CodeAnalysis;
+@inject ILocalStorageService LocalStorage
+@inject IUserService UserService
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject NavigationManager NavigationManager
+<div class="page">
+    <Layout >
+        <Header >
+            <div>
+
+                <div style="float:left;color:#0d6efd;padding:10px">
+                        <h3 style="font-weight:bold">管理员系统</h3>
+                    </div>
+                    <div style="float:right;padding:10px">
+                    <Logout ImageUrl="@user.Avartar" ShowUserName="false" DisplayName="管理员" UserName="@user.Name">
+                        <LinkTemplate>
+                            <Button OnClick="Logout">注销</Button>
+                        </LinkTemplate>
+                    </Logout>
+                    </div>
+                </div>
+        </Header>
+        <Side>
+            <div style="border-right: 1px solid #e6e6e6; height: 100%; overflow: auto; padding: 1rem 0; background-color: #f8f9fa;height:93vh">
+                <Menu Items="@GetSideMenuItems()" IsVertical="true" OnClick="@OnClickMenuItem" @ref="TabMenu" />
+            </div>
+        </Side>
+        <Main>
+            <div class="tab-main-demo">
+                <Tab @ref="TabSetMenu" ShowClose="true">
+                </Tab>
+            </div>
+        </Main>
+    </Layout>
+</div>
+
+@code {
+    private User user = new User();
+
+    [NotNull]
+    private Menu? TabMenu { get; set; }
+
+    [NotNull]
+    private Tab? TabSetMenu { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        user = await UserService.GetUserByPhone(phone);
+    }
+    private async Task Logout()
+    {
+        await LocalStorage.RemoveItemAsync("authToken");
+        await LocalStorage.RemoveItemAsync("phone");
+        await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        NavigationManager.NavigateTo("/");
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var menuItem = TabMenu?.Items.FirstOrDefault();
+            if (menuItem != null)
+            {
+                await InvokeAsync(() =>
+                {
+                    var _ = TabMenu?.OnClick?.Invoke(menuItem);
+                });
+            }
+        }
+    }
+
+    private IEnumerable<MenuItem> GetSideMenuItems()
+    {
+        return new List<MenuItem>
+        {
+            new MenuItem() { Text = "商家管理"  },
+            new MenuItem() { Text = "菜品管理" }
+        };
+    }
+
+    private Task OnClickMenuItem(MenuItem item)
+    {
+        var text = item.Text;
+        var tabItem = TabSetMenu.Items.FirstOrDefault(i => i.Text == text);
+        if (tabItem == null) AddTabItem(text ?? "");
+        else TabSetMenu.ActiveTab(tabItem);
+        return Task.CompletedTask;
+    }
+
+    private void AddTabItem(string text) => TabSetMenu.AddTab(new Dictionary<string, object?>
+        {
+            [nameof(TabItem.Text)] = text,
+            [nameof(TabItem.IsActive)] = true,
+            [nameof(TabItem.ChildContent)] = text == "商家管理" ? BootstrapDynamicComponent.CreateComponent<SellerManage>().Render() : BootstrapDynamicComponent.CreateComponent<CuisineManage>().Render()
+        });
+}

@@ -27,5 +27,13 @@ namespace TJFoody.Server.Controllers
             var result = await _sellerService.AddSellerAsync(seller);
             return Ok(result);
         }
+
+        [HttpPost]
+        [Route("modify")]
+        public async Task<ActionResult<ServiceResponse<Seller>>> modifySeller(Seller seller)
+        {
+            var result = await _sellerService.ModifySeller(seller);
+            return Ok(result);
+        }
     }
 }

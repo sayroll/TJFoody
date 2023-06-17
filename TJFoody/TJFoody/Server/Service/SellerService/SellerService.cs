@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TJFoody.Server.Models;
+using TJFoody.Shared;
 
 namespace TJFoody.Server.Service.SellerService
 {
@@ -56,6 +57,46 @@ namespace TJFoody.Server.Service.SellerService
             {
                 Data = await _context.Sellers.ToListAsync()
             };
+            return response;
+        }
+
+        async Task<ServiceResponse<Seller>> ISellerService.ModifySeller(Seller seller)
+        {
+            ServiceResponse<Seller> response = new ServiceResponse<Seller>();
+
+            try
+            {
+                // Find the user in the Users table based on the phone number
+                Seller sellerToUpdate = _context.Sellers.FirstOrDefault(u => u.Id == seller.Id);
+
+                if (sellerToUpdate != null)
+                {
+                    // Update the user information
+                    sellerToUpdate.Name = seller.Name;
+                    sellerToUpdate.Location = seller.Location;
+                    sellerToUpdate.Poi = seller.Poi;
+                    sellerToUpdate.ImageUrl = seller.ImageUrl;
+
+                    // Save the changes to the database
+                    await _context.SaveChangesAsync();
+
+                    response.Data = sellerToUpdate;
+                    response.Success = true;
+                    response.Message = "seller information updated successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "seller not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error updating seller information: " + ex.Message;
+            }
+
             return response;
         }
     }

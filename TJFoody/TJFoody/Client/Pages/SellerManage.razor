@@ -1,0 +1,206 @@
+﻿@using System.ComponentModel.DataAnnotations;
+@using System.Diagnostics.CodeAnalysis;
+@inject ISellerService SellerService
+@inject MessageService MessageService
+
+<PageTitle>商家管理</PageTitle>
+
+<div style="padding-bottom:20px">
+    <Button Text="添加商家" Color="Color.Primary" OnClickWithoutRender="@ShowAddDialog" />
+</div>
+<Card>
+    <BodyTemplate>
+        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>商家编号</th>
+                        <th>商家名称</th>
+                        <th>商家位置</th>
+                        <th>POI</th>
+                        <th>图片预览</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var seller in SellerService.sellers)
+                    {
+                        <tr>
+                            <td>@seller.Id</td>
+                            <td>@seller.Name</td>
+                            <td>@seller.Location</td>
+                            <td>@seller.Poi</td>
+                            <td><img src="@seller.ImageUrl" style="width:100px;object-fit: cover;" class="img-fluid" /></td>
+                            <td>
+                                <Button Text="修改信息" Color="Color.Primary" @onclick="() => ModifySeller(seller.Id)" />
+
+                                <Button Text="删除商家" Color="Color.Danger" @onclick="() => DeleteSeller(seller.Id)" />
+
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </BodyTemplate>
+</Card>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await SellerService.GetSellers();
+    }
+
+    [Inject]
+    [NotNull]
+    private DialogService? DialogService { get; set; }
+
+    public class AddSellerContent
+    {
+        [Required]
+        [AutoGenerateColumn(Order = 1, Filterable = true, Searchable = true)]
+        [Display(Name = "商家名称")]
+        public string? Name { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 2, Filterable = true, Searchable = true)]
+        [Display(Name = "商家位置")]
+        public string? Location { get; set; }
+
+
+        [Required]
+        [AutoGenerateColumn(Order = 3, Filterable = true, Searchable = true)]
+        [Display(Name = "图片链接")]
+        public string? ImageUrl { get; set; }
+
+        [Required]
+        [AutoGenerateColumn(Order = 4, Filterable = true, Searchable = true)]
+        [Display(Name = "POI")]
+        public string? Poi { get; set; }
+
+    }
+
+    private AddSellerContent Addmodel = new AddSellerContent
+        {
+            Name = "",
+            Location = "",
+            ImageUrl = "",
+            Poi = ""
+        };
+    private AddSellerContent modify = new AddSellerContent
+        {
+            Name = "",
+            Location = "",
+            ImageUrl = "",
+            Poi = ""
+        };
+
+    private async Task ModifySeller(int Id)
+    {
+        var items = Utility.GenerateEditorItems<AddSellerContent>();
+        //var item = items.First(i => i.GetFieldName() == nameof(AddTeamContent.rate));
+        Seller seller = SellerService.sellers.Find(p => p.Id == Id);
+        modify.Name = seller.Name;
+        modify.Location = seller.Location;
+        modify.ImageUrl = seller.ImageUrl;
+        modify.Poi = seller.Poi;
+        var option = new EditDialogOption<AddSellerContent>()
+            {
+                Title = "修改商家信息",
+                Model = modify,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    SubmitModify(Id);
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "发布"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task SubmitModify(int Id)
+    {
+        Seller seller = new Seller
+            {
+                Id = Id,
+                Name = modify.Name,
+                Location = modify.Location,
+                ImageUrl = modify.ImageUrl,
+                Poi = modify.Poi
+            };
+
+        var response = await SellerService.modifySeller(seller);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "修改商家信息成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await SellerService.GetSellers();
+        StateHasChanged();
+    }
+
+
+    private async Task DeleteSeller(int Id)
+    {
+
+    }
+
+    private async Task ShowAddDialog()
+    {
+        var items = Utility.GenerateEditorItems<AddSellerContent>();
+        //var item = items.First(i => i.GetFieldName() == nameof(AddTeamContent.rate));
+        var option = new EditDialogOption<AddSellerContent>()
+            {
+                Title = "添加商家信息",
+                Model = Addmodel,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    submitSeller();
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "发布"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+
+    private async Task submitSeller()
+    {
+        Seller seller = new Seller
+            {
+                Name = Addmodel.Name,
+                Location = Addmodel.Location,
+                ImageUrl = Addmodel.ImageUrl,
+                Poi = Addmodel.Poi
+            };
+        var response = await SellerService.addSeller(seller);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "添加商家信息成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+
+        await SellerService.GetSellers();
+        StateHasChanged();
+    }
+}

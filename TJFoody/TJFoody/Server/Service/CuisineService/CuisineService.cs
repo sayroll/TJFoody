@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using TJFoody.Server.Models;
+using TJFoody.Shared;
 
 namespace TJFoody.Server.Service.CuisineService
 {
@@ -59,5 +60,53 @@ namespace TJFoody.Server.Service.CuisineService
             return response;
         }
 
+        async Task<ServiceResponse<List<Cuisine>>> ICuisineService.GetCuisinesAsync()
+        {
+            var response = new ServiceResponse<List<Cuisine>>
+            {
+                Data = await _context.Cuisines.ToListAsync()
+            };
+            return response;
+        }
+
+        async Task<ServiceResponse<Cuisine>> ICuisineService.ModifyCuisine(Cuisine cuisine)
+        {
+            ServiceResponse<Cuisine> response = new ServiceResponse<Cuisine>();
+
+            try
+            {
+                // Find the user in the Users table based on the phone number
+                Cuisine cuisineToUpdate = _context.Cuisines.FirstOrDefault(u => u.Id == cuisine.Id);
+
+                if (cuisineToUpdate != null)
+                {
+                    // Update the user information
+                    cuisineToUpdate.Name = cuisine.Name;
+                    cuisineToUpdate.SellerId = cuisine.SellerId;
+                    cuisineToUpdate.Description = cuisine.Description;
+                    cuisineToUpdate.ImageUrl = cuisine.ImageUrl;
+
+                    // Save the changes to the database
+                    await _context.SaveChangesAsync();
+
+                    response.Data = cuisineToUpdate;
+                    response.Success = true;
+                    response.Message = "cuisine information updated successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "cuisine not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error updating cuisine information: " + ex.Message;
+            }
+
+            return response;
+        }
     }
 }

@@ -86,7 +86,10 @@
                 await LocalStorage.SetItemAsync("phone", user.Phone);
                 await AuthenticationStateProvider.GetAuthenticationStateAsync();
                 await MessageService.Show(new MessageOption() { Content = "登陆成功" });
-                Navigation.NavigateTo("/main");
+                if (user.Phone == "13333333333")
+                    Navigation.NavigateTo("/manager");
+                else
+                    Navigation.NavigateTo("/main");
             }
             else
             {

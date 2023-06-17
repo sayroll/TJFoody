@@ -15,6 +15,15 @@ namespace TJFoody.Server.Controllers
             _cuisineService = cuisineService;
         }
 
+
+        [HttpGet]
+        [Route("get")]
+        public async Task<ActionResult<ServiceResponse<List<Cuisine>>>> getCuisines()
+        {
+            var result = await _cuisineService.GetCuisinesAsync();
+            return Ok(result);
+        }
+
         //[HttpPost]
         //[Route("GetCuisineBySellerID")]
         [HttpGet("{id}")]
@@ -39,7 +48,13 @@ namespace TJFoody.Server.Controllers
             return Ok(response);
         }
 
-           
+        [HttpPost]
+        [Route("modify")]
+        public async Task<ActionResult<ServiceResponse<Cuisine>>> modifyCuisine(Cuisine cuisine)
+        {
+            var result = await _cuisineService.ModifyCuisine(cuisine);
+            return Ok(result);
+        }
 
     }
 }
