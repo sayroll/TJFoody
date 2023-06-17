@@ -10,7 +10,7 @@ global using TJFoody.Client.Services.CuisineService;
 global using TJFoody.Client.Services.UserJoinTeamService;
 global using TJFoody.Client.Services.PostService;
 global using TJFoody.Client.Services.CommentService;
-
+global using CLRForBlazor;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using TJFoody.Client;

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using TJFoody.Server.Models;
@@ -72,12 +73,18 @@ namespace TJFoody.Server.Service.UserService
             }
             else
             {
+                string []avatars = { "https://tse4-mm.cn.bing.net/th/id/OIP-C.fCI3bS2q9T3_vsKUMchDsAAAAA?w=210&h=210&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                                            "https://tse4-mm.cn.bing.net/th/id/OIP-C.fCI3bS2q9T3_vsKUMchDsAAAAA?w=210&h=210&c=7&r=0&o=5&dpr=1.3&pid=1.7",
+                                            "https://th.bing.com/th/id/R.1755affb2fb455feb60b1cdc77e49d55?rik=MQyCP8dNYHRm1A&pid=ImgRaw&r=0",
+                                            "https://th.bing.com/th/id/R.1c74988f9e9f0ff22363532d9222cecf?rik=dUXsZ0xANtDExQ&pid=ImgRaw&r=0",
+                                            "https://th.bing.com/th/id/R.57e393ce4d537f5acc76557fea791ff0?rik=WbZfZn5GHPDjyw&pid=ImgRaw&r=0" };
+                int ptr = CppForBlazor.MyAvatar();
                 User user = new User
                 {
                     Phone = phone,
                     Name = name,
                     Password = password,
-                    Avartar = "https://tse4-mm.cn.bing.net/th/id/OIP-C.fCI3bS2q9T3_vsKUMchDsAAAAA?w=210&h=210&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+                    Avartar = avatars[ptr]
                 };
                 try
                 {

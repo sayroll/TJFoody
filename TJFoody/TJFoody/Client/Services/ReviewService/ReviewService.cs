@@ -71,12 +71,14 @@ namespace TJFoody.Client.Services.ReviewService
         {
             int number = 0;
             double sum = 0;
+            CLRHelper cLRHelper = new CLRHelper();
             foreach(var review in sellerReviews )
             {
                 if(review.SellerId == sellerID)
                 {
                     number++;
-                    sum += review.Rate.Value;
+                    sum = cLRHelper.CLRAdd(sum, review.Rate.Value);
+                    //sum += review.Rate.Value;
                 }
             }
             double result;
@@ -88,7 +90,7 @@ namespace TJFoody.Client.Services.ReviewService
             {
                 result = sum / number;
             }
-            return result;
+            return Math.Round(result,2);
         }
 
         public double calculateCuisineRate(int cuisineID)
@@ -112,7 +114,7 @@ namespace TJFoody.Client.Services.ReviewService
             {
                 result = sum / number;
             }
-            return result;
+            return Math.Round(result,2);
         }
 
         async Task<List<SellerReview>> IReviewService.getSellerReviewsByUserId(string userId)

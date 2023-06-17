@@ -145,7 +145,6 @@ namespace TJFoody.Server.Service.ReviewService
         async Task<ServiceResponse<CuisineReview>> IReviewService.DeleteCuisineReview(int id)
         {
             ServiceResponse<CuisineReview> response = new ServiceResponse<CuisineReview>();
-
             try
             {
                 // Find the cuisine review by id in the database

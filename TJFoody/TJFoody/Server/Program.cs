@@ -1,5 +1,6 @@
 global using TJFoody.Server.Service.SellerService;
 global using TJFoody.Shared;
+global using CLRForBlazor;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.EntityFrameworkCore; 
 using TJFoody.Server.Models;

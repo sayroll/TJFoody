@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "hbxF+Xh/v1gHJVvPFb+6ZKgM6BT8YvGWtfJDmW7iLiQFWt4SNgGcIKjT/QMg97i6HYocWrCNIPeYek+1UgEjNw==",
+  "success": true,
+  "projectFilePath": "E:\\.net\\作业\\TJFoody\\TJFoody\\CLRForBlazor\\CLRForBlazor.vcxproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.windows.sdk.net.ref\\10.0.22000.28\\microsoft.windows.sdk.net.ref.10.0.22000.28.nupkg.sha512"
+  ],
+  "logs": []
+}
