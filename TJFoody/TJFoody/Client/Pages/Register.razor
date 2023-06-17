@@ -66,9 +66,6 @@
 @code {
     [NotNull]
     private RegisterModel? Model { get; set; } = new();
-
-    User user = new User();
-
     string errorMessage = string.Empty;
 
     [NotNull]
@@ -86,12 +83,7 @@
         var result = ValidatorForm.Validate();
         if (result)
         {
-            user.Name = Model.UserName;
-            user.Password = Model.Password;
-            user.Phone = Model.Phone;
-            user.Avartar = "";
-
-            var response = await UserService.Register(user);
+            var response = await UserService.Register(Model.Phone, Model.Password, Model.UserName);
             if(!response.Success)
             {
                 errorMessage = response.Message;

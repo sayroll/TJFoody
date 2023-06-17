@@ -2,7 +2,7 @@
 {
     public interface IUserService
     {
-        Task<ServiceResponse<User>> Register(User user);
+        Task<ServiceResponse<User>> Register(string Phone, string Password, string Name);
 
         Task<ServiceResponse<string>> Login(User user);
 

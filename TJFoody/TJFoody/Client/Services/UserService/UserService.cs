@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Json;
+﻿using System;
+using System.Net.Http.Json;
 
 namespace TJFoody.Client.Services.UserService
 {
@@ -26,11 +27,10 @@ namespace TJFoody.Client.Services.UserService
 
         }
 
-        public async Task<ServiceResponse<User>>  Register(User user)
+        public async Task<ServiceResponse<User>>  Register(string Phone, string Password, string Name)
         {
-            var result = await _http.PostAsJsonAsync("User/register", user);
-
-            return await result.Content.ReadFromJsonAsync<ServiceResponse<User>>();
+            var result = await _http.GetFromJsonAsync<ServiceResponse<User>>($"User/register/{Phone}/{Password}/{Name}");
+            return result;
         }
 
         async Task<ServiceResponse<User>> IUserService.ModifyUserInfo(User user)
