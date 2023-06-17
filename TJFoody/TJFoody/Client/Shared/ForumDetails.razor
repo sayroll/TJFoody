@@ -33,7 +33,7 @@ else
         </BodyTemplate>
     </Card>
     <div>
-        <span style="display: block; margin: 0 auto;color:grey;font-size:15px;">帖子内容</span>
+        <span style="display: block; margin: 0 auto;color:grey;font-size:15px;">帖子评论</span>
     </div>
     
 
@@ -45,26 +45,38 @@ else
                     <img class="img-fluid" style="object-fit: cover;" src="@model.usr.Avartar" />
                 </div>
                 <div style="float:left;padding-left:20px;width:80%">
-                    <h5 style="font-weight:bold;color:#7F82BB">@model.usr.Name</h5>
+                    @if (model.cmt.ReplyId != -1)
+                    {
+                        <h5 style="color:cadetblue">@model.usr.Name 回复ID为 @model.cmt.ReplyId 的评论</h5>
+                    }
+                    else
+                    {
+                        <h5 style="font-weight:bold;color:#7F82BB">@model.usr.Name</h5>
+                    }
                     <p style="color:grey;font-size:15px;padding-top:10px">@model.cmt.Content</p>
                 </div>
                 <div style="float:right;">
                     <h5 style="color:grey;font-size:15px;">@model.cmt.Time</h5>
+                    <h5 style="color:grey;font-size:15px;">ID:@model.cmt.Id</h5>
                 </div>
+                <Button style="float:right;" OnClick="(()=> ShowReplyDialog(model.cmt.Id))">回复</Button>
+                @if (model.usr.Phone.Equals(phoneNum))
+                {
+                    <Button style="float:right;" OnClick="(()=> deleteComment(model.cmt.Id))">删除</Button>
+                }
             </BodyTemplate>
         </Card>
     }
     <Button OnClick="ShowEditedDialog">回复帖子</Button>
-    <Button OnClick="delete">删除</Button>
 }
 
 
 
 @code {
 
-    public async Task delete()
+    public async Task deleteComment(int id)
     {
-        await CommentService.deleteComment(1);
+        await CommentService.deleteComment(id);
         await getinfo();
         StateHasChanged();
     }
@@ -80,6 +92,7 @@ else
 
     private Post post = null;
     private User poster = null;
+    private string phoneNum = string.Empty;
     [Inject]
     [NotNull]
     private DialogService? DialogService { get; set; }
@@ -118,6 +131,8 @@ else
         post = await PostService.getPostById(Id);
         string phone = post.Phone;
         poster = await UserService.GetUserByPhone(phone.Replace("\"", ""));
+        phoneNum = await LocalStorage.GetItemAsStringAsync("phone");
+        phoneNum = phoneNum.Replace("\"", "");
         await getinfo();
 
     }
@@ -151,6 +166,56 @@ else
         await DialogService.ShowEditDialog(option);
     }
 
+    private async Task ShowReplyDialog(int replyid)
+    {
+        var items = Utility.GenerateEditorItems<commentContent>();
+        var option = new EditDialogOption<commentContent>()
+            {
+                Title = "回复评论",
+                Model = model,
+                Items = items,
+                ItemsPerRow = 1,
+                RowType = RowType.Inline,
+                OnCloseAsync = () =>
+                {
+                    return Task.CompletedTask;
+                },
+                OnEditAsync = context =>
+                {
+                    replyComment(replyid);
+                    return Task.FromResult(true);
+                },
+                SaveButtonText = "回复"
+            };
+        await DialogService.ShowEditDialog(option);
+    }
+    private async Task replyComment(int replyid)
+    {
+        string phone = await LocalStorage.GetItemAsStringAsync("phone");
+        phone = phone.Replace("\"", "");
+        Comment comment = new Comment
+            {
+                PostId = Id,
+                Phone = phone,
+                Content = model.text,
+                Time = DateTime.Now.ToString(),
+                ReplyId = replyid,
+                Post = new Post()
+            };
+        var response = await CommentService.addComment(comment);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "回复评论成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await getinfo();
+        StateHasChanged();
+    }
+
+
     private async Task addComment()
     {
         string phone = await LocalStorage.GetItemAsStringAsync("phone");
@@ -161,7 +226,8 @@ else
                 Phone = phone,
                 Content = model.text,
                 Time = DateTime.Now.ToString(),
-                ReplyId = -1
+                ReplyId = -1,
+                Post = new Post()
             };
         var response = await CommentService.addComment(comment);
         if (response.Success)

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Text;
 using TJFoody.Server.Service.CommentService;
+using TJFoody.Shared;
 
 namespace TJFoody.Server.Controllers
 {
@@ -32,13 +34,15 @@ namespace TJFoody.Server.Controllers
         [Route("add")]
         public async Task<ActionResult<ServiceResponse<int>>> addComment(Comment comment)
         {
+            Console.WriteLine("aa");
             int postid = comment.PostId;
             string phone = comment.Phone;
             string content = comment.Content;
-            int? replyId = comment.ReplyId;
-            var response = await _commentService.AddComment(postid, phone, content, replyId);
-            
-            if(response.Success)
+            int? replyid = comment.ReplyId;
+
+            var response = await _commentService.AddComment(postid, phone, content, replyid);
+
+            if (response.Success)
             {
                 return Ok(response);
             }

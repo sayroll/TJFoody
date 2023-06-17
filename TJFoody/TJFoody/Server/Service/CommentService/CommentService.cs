@@ -13,7 +13,7 @@ namespace TJFoody.Server.Service.CommentService
         public async Task<ServiceResponse<int>> AddComment(int postid, string phone, string content, int? replyId)
         {
             var response = new ServiceResponse<int>();
-
+            response.Data = 100;
             Comment comment = new Comment
             {
                 PostId = postid,
@@ -26,6 +26,7 @@ namespace TJFoody.Server.Service.CommentService
             {
                 await _infoContext.Comments.AddAsync(comment);
                 await _infoContext.SaveChangesAsync();
+                response.Message = "数据传输成功";
             }
             catch(Exception ex)
             {

@@ -30,7 +30,11 @@ else
                 <BodyTemplate>
                     <div style="font-weight: bold;font-size: 30px;">@post.Postname</div>
                     <div style="text-indent: 2em;font-size: 20px;">@post.Content</div>
-                    <Button  style="float:right;" OnClick="(()=> deletePost(post.Id))">删除</Button>
+                    @if(post.Phone.Equals(phoneNum))
+                    {
+                        <Button style="float:right;" OnClick="(()=> deletePost(post.Id))">删除</Button>
+                    }
+                    
                     <div style="float:right;">
                         <Button style="float:right;margin-right:20px" OnClick="(()=> JumpDetail(post.Id))">详情</Button>
                     </div>
@@ -48,6 +52,8 @@ else
     [Inject]
     [NotNull]
     private DialogService? DialogService { get; set; }
+
+    private string phoneNum = string.Empty;
 
     public class forumContent
     {
@@ -96,6 +102,8 @@ else
     protected override async Task OnInitializedAsync()
     {
         await PostService.getAllPosts();
+        phoneNum = await LocalStorage.GetItemAsStringAsync("phone");
+        phoneNum = phoneNum.Replace("\"", "");
     }
 
     private Task JumpDetail(int id)
