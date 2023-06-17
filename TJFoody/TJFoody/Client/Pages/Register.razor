@@ -89,6 +89,7 @@
             user.Name = Model.UserName;
             user.Password = Model.Password;
             user.Phone = Model.Phone;
+            user.Avartar = "";
 
             var response = await UserService.Register(user);
             if(!response.Success)

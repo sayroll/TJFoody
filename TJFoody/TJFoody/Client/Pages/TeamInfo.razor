@@ -64,10 +64,10 @@
     </TabItem>
     <TabItem Text="我创建的队伍">
         <div style="overflow-y:auto;overflow-x:hidden;height:530px">
-            @if (TeamService.teams == null || TeamService.teams.Count == 0)
+            @if (LeadTeams == null || LeadTeams.Count == 0)
             {
                 <span>
-                    加载中...
+                    未创建队伍
                 </span>
             }
             else
