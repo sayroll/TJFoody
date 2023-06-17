@@ -108,7 +108,7 @@
         await GetCuisineReview();
         StateHasChanged();
     }
-    
+
     private async Task DeleteCuisineReview(int Id)
     {
         var response = await ReviewService.DeleteCuisineReview(Id);
@@ -143,11 +143,14 @@
         mySellerReview.Clear();
         string phone = await LocalStorage.GetItemAsStringAsync("phone");
         phone = phone.Replace("\"", "");
-        List<SellerReview> sellerRevies = await ReviewService.getSellerReviewsByUserId(phone);
+        List<SellerReview> sellerReviews = await ReviewService.getSellerReviewsByUserId(phone);
 
-        foreach (var sellerReview in sellerRevies)
+        foreach (var sellerReview in sellerReviews)
         {
-            Seller seller = SellerService.sellers.Find(p => p.Id == sellerReview.SellerId);
+            await SellerService.GetSellers();
+            Seller? seller = null;
+            seller = SellerService.sellers.Find(p => p.Id == sellerReview.SellerId);
+            
             MyReviewModel sellerReviewModel = new MyReviewModel
                 {
                     Id = sellerReview.Id,
