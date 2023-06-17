@@ -1,0 +1,7 @@
+﻿  pch.cpp
+  AssemblyInfo.cpp
+  CLRForBlazor.cpp
+  正在生成代码...
+  .NETCoreApp,Version=v6.0.AssemblyAttributes.cpp
+  AssemblyInfo.obj : 遇到了 MSIL 模块；对 MSIL 禁用了增量链接；正在执行完全链接
+  CLRForBlazor.vcxproj -> E:\.net\作业\TJFoody\TJFoody\x64\Release\CLRForBlazor.dll

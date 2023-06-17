@@ -1,0 +1,12 @@
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\bin\Release\net6.0\TJFoody.Shared.deps.json
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\bin\Release\net6.0\TJFoody.Shared.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\bin\Release\net6.0\TJFoody.Shared.pdb
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.csproj.AssemblyReference.cache
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.GeneratedMSBuildEditorConfig.editorconfig
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.AssemblyInfoInputs.cache
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.AssemblyInfo.cs
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.csproj.CoreCompileInputs.cache
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\refint\TJFoody.Shared.dll
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\TJFoody.Shared.pdb
+E:\.net\作业\TJFoody\TJFoody\TJFoody\Shared\obj\Release\net6.0\ref\TJFoody.Shared.dll
