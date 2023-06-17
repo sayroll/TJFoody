@@ -7,5 +7,6 @@
 
         Task<ServiceResponse<Seller>> addSeller(Seller seller);
         Task<ServiceResponse<Seller>> modifySeller(Seller seller);
+        Task<ServiceResponse<Seller>> DeleteSeller(int id);
     }
 }

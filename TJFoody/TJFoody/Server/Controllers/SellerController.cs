@@ -35,5 +35,12 @@ namespace TJFoody.Server.Controllers
             var result = await _sellerService.ModifySeller(seller);
             return Ok(result);
         }
+
+        [HttpGet("DeleteSeller/{Id}")]
+        public async Task<ActionResult<ServiceResponse<Seller>>> DeleteSeller(int Id)
+        {
+            var response = await _sellerService.DeleteSeller(Id);
+            return Ok(response);
+        }
     }
 }

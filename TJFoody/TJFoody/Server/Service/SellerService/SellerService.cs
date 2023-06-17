@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using TJFoody.Server.Service.CuisineService;
 using TJFoody.Server.Models;
 using TJFoody.Shared;
 
@@ -8,9 +9,11 @@ namespace TJFoody.Server.Service.SellerService
     public class SellerService : ISellerService
     {
         private readonly infoContext _context;
-        public SellerService(infoContext infoContext)
+        private readonly ICuisineService _cuisineService;
+        public SellerService(infoContext infoContext,ICuisineService cuisineService)
         {
             _context = infoContext;
+            _cuisineService = cuisineService;
         }
 
         public async Task<ServiceResponse<EntityEntry<Seller>>> AddSellerAsync(Seller seller)
@@ -28,6 +31,52 @@ namespace TJFoody.Server.Service.SellerService
             {
                 response.Success = false;
                 response.Message = "添加商家时发生错误：" + ex.Message;
+            }
+
+            return response;
+        }
+
+        async public Task<ServiceResponse<Seller>> DeleteSeller(int id)
+        {
+            ServiceResponse<Seller> response = new ServiceResponse<Seller>();
+            try
+            {
+                // Find the Seller by ID in the database
+                Seller sellerToDelete = await _context.Sellers.FindAsync(id);
+
+                if (sellerToDelete != null)
+                {
+                    // Remove the Seller from the database
+                    _context.Sellers.Remove(sellerToDelete);
+
+                    // Find the Cuisines associated with the Seller
+                    List<Cuisine> cuisinesToDelete = _context.Cuisines
+                        .Where(cuisine => cuisine.SellerId == id)
+                        .ToList();
+
+                    // Delete each Cuisine using the DeleteCuisine function
+                    foreach (Cuisine cuisine in cuisinesToDelete)
+                    {
+                        await _cuisineService.DeleteCuisine(cuisine.Id);
+                    }
+
+                    await _context.SaveChangesAsync();
+
+                    response.Data = sellerToDelete;
+                    response.Success = true;
+                    response.Message = "Seller and associated Cuisines deleted successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Seller not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error deleting seller and associated Cuisines: " + ex.Message;
             }
 
             return response;

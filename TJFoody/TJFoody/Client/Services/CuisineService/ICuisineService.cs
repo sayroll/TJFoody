@@ -10,5 +10,7 @@
 
         Task<ServiceResponse<Cuisine>> AddCuisine(Cuisine cuisine);
         Task<ServiceResponse<Cuisine>> ModifyCuisine(Cuisine cuisine);
+
+        Task<ServiceResponse<Cuisine>> DeleteCuisine(int id);
     }
 }

@@ -11,5 +11,6 @@ namespace TJFoody.Server.Service.CuisineService
         Task<ServiceResponse<List<Cuisine>>> GetCuisineBySellerIDAsync(int id);
 
         Task<ServiceResponse<Cuisine>> ModifyCuisine(Cuisine cuisine);
+        Task<ServiceResponse<Cuisine>> DeleteCuisine(int id);
     }
 }

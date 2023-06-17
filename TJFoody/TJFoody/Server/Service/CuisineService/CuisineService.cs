@@ -108,5 +108,47 @@ namespace TJFoody.Server.Service.CuisineService
 
             return response;
         }
+
+        async public Task<ServiceResponse<Cuisine>> DeleteCuisine(int id)
+        {
+            ServiceResponse<Cuisine> response = new ServiceResponse<Cuisine>();
+
+            try
+            {
+                // Find the Cuisine by ID in the database
+                Cuisine cuisineToDelete = await _context.Cuisines.FindAsync(id);
+
+                if (cuisineToDelete != null)
+                {
+                    // Remove the Cuisine from the database
+                    _context.Cuisines.Remove(cuisineToDelete);
+
+                    // Find and remove all related CuisineReviews
+                    List<CuisineReview> reviewsToDelete = _context.CuisineReviews
+                        .Where(review => review.CuisineId == id)
+                        .ToList();
+
+                    _context.CuisineReviews.RemoveRange(reviewsToDelete);
+                    await _context.SaveChangesAsync();
+
+                    response.Data = cuisineToDelete;
+                    response.Success = true;
+                    response.Message = "Cuisine deleted successfully.";
+                }
+                else
+                {
+                    response.Success = false;
+                    response.Message = "Cuisine not found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions
+                response.Success = false;
+                response.Message = "Error deleting cuisine: " + ex.Message;
+            }
+
+            return response;
+        }
     }
 }
