@@ -6,47 +6,51 @@
 @inject NavigationManager Navigation
 @inject MessageService MessageService
 @inject ILocalStorageService LocalStorage
-<div>
-    <div>
-        <img style="width: 50px; height: 50px;" src="https://img1.baidu.com/it/u=1772658647,3167658821&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=507" />
-        <div style="font-weight: bold;font-size: 50px;">
-            实习论坛
-        </div>
-    </div>
-    <Button Size="Size.ExtraLarge" style="display: block; margin: 0 auto;" OnClick="ShowEditedDialog">发帖</Button>
-</div>
-@if(PostService.Posts.Count == 0 || PostService.Posts == null)
-{
-    <span>
-        加载中...
-    </span>
-}
-else
-{
-    <Row ItemsPerRow="ItemsPerRow.One">
-        @foreach(var post in PostService.Posts)
-        {
-            <Card>
-                <BodyTemplate>
-                    <div style="font-weight: bold;font-size: 30px;">@post.Postname</div>
-                    <div style="text-indent: 2em;font-size: 20px;">@post.Content</div>
-                    @if(post.Phone.Equals(phoneNum))
-                    {
-                        <Button style="float:right;" OnClick="(()=> deletePost(post.Id))">删除</Button>
-                    }
-                    
-                    <div style="float:right;">
-                        <Button style="float:right;margin-right:20px" OnClick="(()=> JumpDetail(post.Id))">详情</Button>
-                    </div>
-                    <div style="float:right;">
-                        <h5 style="color:grey;font-size:15px;">@post.Time</h5>
-                    </div>
-                </BodyTemplate>
-            </Card>
-        }
-    </Row>
-}
 
+<center>
+    <div style="padding:20px">
+        <Button ButtonStyle="ButtonStyle.Circle" Icon="fas fa-plus" OnClick="ShowEditedDialog">
+        </Button>
+    </div>
+</center>
+
+<div style="overflow-y:auto;overflow-x:hidden;height:480px">
+    @if (PostService.Posts.Count == 0 || PostService.Posts == null)
+    {
+        <span>
+            加载中...
+        </span>
+    }
+    else
+    {
+        <Row ItemsPerRow="ItemsPerRow.Two" @key="PostService.Posts">
+            @foreach (var post in PostService.Posts)
+            {
+                <Card>
+                    <BodyTemplate>
+                        <div style="width:100%;height:30px;background-color:#aacaf9"></div>
+                        <div style="padding-top:15px">
+                            <div style="font-weight: bold;font-size: 25px;float:left">@post.Postname</div>
+                            <div style="float:right;">
+                                <h5 style="color:grey;font-size:15px;">@post.Time</h5>
+                            </div>
+                        </div>
+                        <p style="font-size: 17px;padding-top:50px;">@post.Content</p>
+                        @if (post.Phone.Equals(phoneNum))
+                        {
+                            <Button style="float:right;margin-left:20px" Color="Color.Danger" OnClick="(()=> deletePost(post.Id))">删除</Button>
+                        }
+
+                        <div style="float:right;">
+                            <Button style="float:right;" OnClick="(()=> JumpDetail(post.Id))">详情</Button>
+                        </div>
+
+                    </BodyTemplate>
+                </Card>
+            }
+        </Row>
+    }
+</div>
 @code {
 
     [Inject]
@@ -124,7 +128,7 @@ else
                 Time = DateTime.Now.ToString()
             };
         var response = await PostService.addPost(post);
-        if(response.Success)
+        if (response.Success)
         {
             await MessageService.Show(new MessageOption() { Content = "发布帖子成功" });
         }
@@ -136,10 +140,10 @@ else
         StateHasChanged();
     }
 
-    private async Task deletePost(int id )
+    private async Task deletePost(int id)
     {
         var response = await PostService.deletePost(id);
-        if(response.Success)
+        if (response.Success)
         {
             await MessageService.Show(new MessageOption() { Content = "删除帖子成功" });
         }
