@@ -60,6 +60,12 @@ namespace TJFoody.Server.Service.SellerService
                         await _cuisineService.DeleteCuisine(cuisine.Id);
                     }
 
+                    // Find the SellerReviews associated with the Seller
+                    List<SellerReview> reviewsToDelete = _context.SellerReviews
+                        .Where(review => review.SellerId == id)
+                        .ToList();
+
+                    _context.SellerReviews.RemoveRange(reviewsToDelete);
                     await _context.SaveChangesAsync();
 
                     response.Data = sellerToDelete;
