@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\CLRForBlazor\CLRForBlazor.vcxproj" />
     <ProjectReference Include="..\Shared\TJFoody.Shared.csproj" />
   </ItemGroup>
 

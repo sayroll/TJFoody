@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "/4XP89sqYsuSdUom+ar8lGOgCCG8kjBnR/4wKIlMTDZ32cIyKLVniQCTxotRvnGIjEP2k10h157UwygM3ESGhw==",
+  "dgSpecHash": "8VkngYe9enupX4Z4D2XNFPcCt/MB9j5PNZxwCuVkdFlEQ62b4E93t3ylnrX0lDX6LXhSfFZxENBWBn5Qs0GIRw==",
   "success": true,
   "projectFilePath": "E:\\.net\\作业\\TJFoody\\TJFoody\\TJFoody\\Server\\TJFoody.Server.csproj",
   "expectedPackageFiles": [
@@ -21,7 +21,14 @@
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.components.web\\6.0.15\\microsoft.aspnetcore.components.web.6.0.15.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly\\6.0.15\\microsoft.aspnetcore.components.webassembly.6.0.15.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.components.webassembly.server\\6.0.15\\microsoft.aspnetcore.components.webassembly.server.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.connections.abstractions\\6.0.15\\microsoft.aspnetcore.connections.abstractions.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.http.connections.client\\6.0.15\\microsoft.aspnetcore.http.connections.client.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.http.connections.common\\6.0.15\\microsoft.aspnetcore.http.connections.common.6.0.15.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.metadata\\6.0.15\\microsoft.aspnetcore.metadata.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.signalr.client\\6.0.15\\microsoft.aspnetcore.signalr.client.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.signalr.client.core\\6.0.15\\microsoft.aspnetcore.signalr.client.core.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.signalr.common\\6.0.15\\microsoft.aspnetcore.signalr.common.6.0.15.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.aspnetcore.signalr.protocols.json\\6.0.15\\microsoft.aspnetcore.signalr.protocols.json.6.0.15.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.1\\microsoft.entityframeworkcore.6.0.1.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.entityframeworkcore.abstractions\\6.0.1\\microsoft.entityframeworkcore.abstractions.6.0.1.nupkg.sha512",
@@ -38,6 +45,7 @@
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.configuration.json\\6.0.0\\microsoft.extensions.configuration.json.6.0.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\6.0.1\\microsoft.extensions.dependencyinjection.6.0.1.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\6.0.0\\microsoft.extensions.dependencyinjection.abstractions.6.0.0.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.features\\6.0.15\\microsoft.extensions.features.6.0.15.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.fileproviders.abstractions\\6.0.0\\microsoft.extensions.fileproviders.abstractions.6.0.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.fileproviders.physical\\6.0.0\\microsoft.extensions.fileproviders.physical.6.0.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\microsoft.extensions.filesystemglobbing\\6.0.0\\microsoft.extensions.filesystemglobbing.6.0.0.nupkg.sha512",
@@ -81,6 +89,7 @@
     "C:\\Users\\sayrol\\.nuget\\packages\\system.text.encoding.codepages\\4.4.0\\system.text.encoding.codepages.4.4.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
+    "C:\\Users\\sayrol\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512",
     "C:\\Users\\sayrol\\.nuget\\packages\\system.windows.extensions\\4.7.0\\system.windows.extensions.4.7.0.nupkg.sha512"
   ],
   "logs": []

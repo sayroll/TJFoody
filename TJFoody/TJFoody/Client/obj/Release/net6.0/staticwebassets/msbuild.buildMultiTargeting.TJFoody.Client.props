@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\TJFoody.Client.props" />
+</Project>
