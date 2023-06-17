@@ -17,8 +17,8 @@ namespace TJFoody.Client.Services.CommentService
 
         public async Task<ServiceResponse<int>> deleteComment(int id)
         {
-            var response = await _http.DeleteAsync($"Comment/delete/{id}");
-            return await response.Content.ReadFromJsonAsync<ServiceResponse<int>>(); 
+            var response = await _http.GetFromJsonAsync<ServiceResponse<int>>($"Comment/delete/{id}");
+            return response;
         }
 
         public async Task<List<Comment>> getCommentByPost(int postid)

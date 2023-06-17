@@ -20,7 +20,7 @@
                 <Button Text="发布组队信息" OnClickWithoutRender="@ShowEditedDialog" />
             </div>
         </center>
-        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+        <div style="overflow-y:auto;overflow-x:hidden;height:530px">
             @if (TeamService.teams == null || TeamService.teams.Count == 0)
             {
                 <span>
@@ -63,7 +63,7 @@
         </div>
     </TabItem>
     <TabItem Text="我创建的队伍">
-        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+        <div style="overflow-y:auto;overflow-x:hidden;height:530px">
             @if (TeamService.teams == null || TeamService.teams.Count == 0)
             {
                 <span>
@@ -112,7 +112,7 @@
         </div>
     </TabItem>
     <TabItem Text="我加入的队伍">
-        <div style="overflow-y:auto;overflow-x:hidden;height:480px">
+        <div style="overflow-y:auto;overflow-x:hidden;height:530px">
             @if (JoinedTeams == null || JoinedTeams.Count == 0)
             {
                 <span>
@@ -121,7 +121,7 @@
             }
             else
             {
-                <Row ItemsPerRow="ItemsPerRow.Two" Data="@JoinedTeams">
+                <Row ItemsPerRow="ItemsPerRow.One">
                     @foreach (var team in JoinedTeams)
                     {
                         <Card>
@@ -202,6 +202,7 @@
 
     private List<TeamInfoModel> teamInfoModels = new List<TeamInfoModel>();
     private List<MyTeamModel> LeadTeams = new List<MyTeamModel>();
+
     private List<TeamInfoModel> JoinedTeams = new List<TeamInfoModel>();
 
 
@@ -545,6 +546,5 @@
             JoinedTeams.Add(teamInfoModel);
 
         }
-        StateHasChanged();
     }
 }

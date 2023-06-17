@@ -59,14 +59,14 @@ namespace TJFoody.Server.Controllers
             }
         }
 
-        [HttpDelete("QuitTeam/{userId}/{teamId}")]
+        [HttpGet("QuitTeam/{userId}/{teamId}")]
         public async Task<ActionResult<ServiceResponse<List<UserJoinTeam>>>> QuitTeam(string userId, int teamId)
         {
             var result = await _userJoinTeamService.QuitTeam(userId, teamId);
             return Ok(result);
         }
 
-        [HttpDelete("DisbandTeam/{teamId}")]
+        [HttpGet("DisbandTeam/{teamId}")]
         public async Task<ActionResult<ServiceResponse<List<UserJoinTeam>>>> DisbandTeam(int teamId)
         {
             var result = await _userJoinTeamService.DisbandTeam(teamId);

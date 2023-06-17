@@ -52,7 +52,7 @@ namespace TJFoody.Server.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpGet]
         [Route("delete/{id}")]
         public async Task<ActionResult<ServiceResponse<int>>> deleteComment(int id)
         {

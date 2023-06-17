@@ -1,4 +1,5 @@
-﻿using TJFoody.Shared;
+﻿using System.Collections.Generic;
+using TJFoody.Shared;
 
 namespace TJFoody.Client.Services.UserJoinTeamService
 {
@@ -13,8 +14,8 @@ namespace TJFoody.Client.Services.UserJoinTeamService
 
         async Task<ServiceResponse<List<UserJoinTeam>>> IUserJoinTeamService.DisbandTeam(int teamId)
         {
-            var response = await _http.DeleteAsync($"UserJoinTeam/DisbandTeam/{teamId}");
-            return await response.Content.ReadFromJsonAsync<ServiceResponse<List<UserJoinTeam>>>();
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List<UserJoinTeam>>>($"UserJoinTeam/DisbandTeam/{teamId}");
+            return response;
         }
 
         async Task<List<string>> IUserJoinTeamService.getMember(int teamId)
@@ -43,8 +44,8 @@ namespace TJFoody.Client.Services.UserJoinTeamService
 
         async Task<ServiceResponse<List<UserJoinTeam>>> IUserJoinTeamService.QuitTeam(string userId, int teamId)
         {
-            var response = await _http.DeleteAsync($"UserJoinTeam/QuitTeam/{userId}/{teamId}");
-            return await response.Content.ReadFromJsonAsync<ServiceResponse<List<UserJoinTeam>>>();
+            var response = await _http.GetFromJsonAsync<ServiceResponse<List< UserJoinTeam>>> ($"UserJoinTeam/QuitTeam/{userId}/{teamId}");
+            return response;
         }
     }
 }

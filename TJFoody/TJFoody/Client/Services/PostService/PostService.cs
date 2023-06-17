@@ -18,8 +18,8 @@
 
         public async Task<ServiceResponse<int>> deletePost(int id)
         {
-            var response = await _http.DeleteAsync($"Post/delete/{id}");
-            return await response.Content.ReadFromJsonAsync<ServiceResponse<int>>();
+            var response = await _http.GetFromJsonAsync<ServiceResponse<int>>($"Post/delete/{id}");
+            return response;
         }
 
         public async Task getAllPosts()
