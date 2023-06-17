@@ -12,6 +12,12 @@ namespace TJFoody.Client.Services.SellerService
         }
         public List<Seller> sellers { get; set; } = new List<Seller>();
 
+        async public Task<ServiceResponse<Seller>> DeleteSeller(int id)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<Seller>>($"Seller/DeleteSeller/{id}");
+            return response;
+        }
+
         public async Task GetSellers()
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<List<Seller>>>("Seller/get");

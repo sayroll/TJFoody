@@ -29,6 +29,12 @@ namespace TJFoody.Client.Services.CuisineService
             return await response.Content.ReadFromJsonAsync<ServiceResponse<Cuisine>>();
         }
 
+        async Task<ServiceResponse<Cuisine>> ICuisineService.DeleteCuisine(int id)
+        {
+            var response = await _http.GetFromJsonAsync<ServiceResponse<Cuisine>>($"Cuisine/DeleteCuisine/{id}");
+            return response;
+        }
+
         async Task<Cuisine> ICuisineService.GetCuisineById(int id)
         {
             var result = await _http.GetFromJsonAsync<ServiceResponse<Cuisine>>($"Cuisine/GetCuisineByID/{id}");

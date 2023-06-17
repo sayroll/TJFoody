@@ -48,6 +48,13 @@ namespace TJFoody.Server.Controllers
             return Ok(response);
         }
 
+        [HttpGet("DeleteCuisine/{cuisineId}")]
+        public async Task<ActionResult<ServiceResponse<Cuisine>>> DeleteCuisine(int cuisineId)
+        {
+            var response = await _cuisineService.DeleteCuisine(cuisineId);
+            return Ok(response);
+        }
+
         [HttpPost]
         [Route("modify")]
         public async Task<ActionResult<ServiceResponse<Cuisine>>> modifyCuisine(Cuisine cuisine)

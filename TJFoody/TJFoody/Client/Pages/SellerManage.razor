@@ -1,6 +1,7 @@
 ﻿@using System.ComponentModel.DataAnnotations;
 @using System.Diagnostics.CodeAnalysis;
 @inject ISellerService SellerService
+@inject ICuisineService CuisineService
 @inject MessageService MessageService
 
 <PageTitle>商家管理</PageTitle>
@@ -152,7 +153,18 @@
 
     private async Task DeleteSeller(int Id)
     {
-
+        var response = await SellerService.DeleteSeller(Id);
+        if (response.Success)
+        {
+            await MessageService.Show(new MessageOption() { Content = "删除商家成功" });
+        }
+        else
+        {
+            await MessageService.Show(new MessageOption() { Content = response.Message });
+        }
+        await SellerService.GetSellers();
+        await CuisineService.GetCuisines();
+        StateHasChanged();
     }
 
     private async Task ShowAddDialog()
